@@ -1,0 +1,18 @@
+# Africa's Talking credentials
+# Get these from https://account.africastalking.com after creating an app.
+# Use the sandbox app + sandbox base URL while developing/testing, since
+# sandbox sending is free and doesn't require pre-approved sender IDs.
+africastalking.username=sandbox
+africastalking.apiKey=REPLACE_WITH_YOUR_API_KEY
+africastalking.baseUrl=https://api.sandbox.africastalking.com/version1/messaging
+# When ready to go live, switch to:
+# africastalking.baseUrl=https://api.africastalking.com/version1/messaging
+
+# School identity is now set inside the app on first run (School Setup screen)
+# and stored in the database — these two lines are no longer used, kept only
+# as a reference to what keys are involved.
+# school.name / school.initials -> stored in the Settings table, not here.
+
+# GitHub repo this app checks for updates against — set after you create the repo
+github.owner=Joenathan-hub
+github.repo=YOUR_REPO_NAME

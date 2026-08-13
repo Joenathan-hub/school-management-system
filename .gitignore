@@ -1,0 +1,12 @@
+target/
+*.class
+.idea/
+*.iml
+.vscode/
+*.log
+*.db
+*.sqlite
+dist/
+*.exe
+dependency-reduced-pom.xml
+src/main/resources/config.properties
