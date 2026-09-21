@@ -11,6 +11,10 @@ public class Payment {
     private LocalDateTime paymentDate;
     private int recordedByUserId;  // audit trail (suggestion #5)
     private String notes;
+    private java.time.LocalDateTime recordedAt; // when it was entered into the system — never edited
+
+    public java.time.LocalDateTime getRecordedAt() { return recordedAt; }
+    public void setRecordedAt(java.time.LocalDateTime recordedAt) { this.recordedAt = recordedAt; }
 
     public Payment() {}
 

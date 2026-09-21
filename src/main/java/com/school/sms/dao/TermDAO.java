@@ -68,6 +68,19 @@ public class TermDAO {
         }
     }
 
+    /** Corrects when a term actually began. Closing date and status are retained. */
+    public void updateStartDate(int termId, LocalDateTime startDate) {
+        String sql = "UPDATE Terms SET startDate = ? WHERE id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setTimestamp(1, Timestamp.valueOf(startDate));
+            ps.setInt(2, termId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update term start date: " + e.getMessage(), e);
+        }
+    }
+
     private Term map(ResultSet rs) throws SQLException {
         Term t = new Term();
         t.setId(rs.getInt("id"));

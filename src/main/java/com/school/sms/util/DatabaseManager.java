@@ -81,6 +81,11 @@ public class DatabaseManager {
                 createdByUserId LONG
             )
         """);
+
+        // Preserve when money was entered separately from its actual date.
+        tryExecute(conn, "ALTER TABLE Payments ADD COLUMN recordedAt DATETIME");
+        tryExecute(conn, "ALTER TABLE Expenditures ADD COLUMN recordedAt DATETIME");
+        tryExecute(conn, "ALTER TABLE WorkerPayments ADD COLUMN recordedAt DATETIME");
     }
 
     /** Attempts a schema change and silently ignores failure — the only realistic failure here is "already applied", which is expected on every startup after the first. */

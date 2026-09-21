@@ -89,6 +89,19 @@ public class WorkerDAO {
         return results;
     }
 
+    /** Corrects a worker's actual start date without changing payroll data. */
+    public void updateDateJoined(int workerId, LocalDate dateJoined) {
+        String sql = "UPDATE Workers SET dateJoined = ? WHERE id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, Date.valueOf(dateJoined));
+            ps.setInt(2, workerId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update worker start date: " + e.getMessage(), e);
+        }
+    }
+
     private Worker map(ResultSet rs) throws SQLException {
         Worker w = new Worker();
         w.setId(rs.getInt("id"));
@@ -101,5 +114,19 @@ public class WorkerDAO {
         w.setMonthlySalary(rs.getDouble("monthlySalary"));
         w.setActive(rs.getBoolean("active"));
         return w;
+    }
+
+    public Worker findById(int id) {
+        String sql = "SELECT * FROM Workers WHERE id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return map(rs);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch worker: " + e.getMessage(), e);
+        }
+        return null;
     }
 }

@@ -26,15 +26,16 @@ public class PaymentService {
         public double newBalance;
     }
 
-    public PaymentResult recordPayment(Student student, String term, double amount,
-                                        String notes, int recordedByUserId) {
+        public PaymentResult recordPayment(Student student, String term, double amount,
+                                        String notes, int recordedByUserId,
+                                        java.time.LocalDate transactionDate) {
 
         Payment payment = new Payment();
         payment.setReceiptNumber(paymentDAO.nextReceiptNumber());
         payment.setStudentId(student.getId());
         payment.setAmount(amount);
         payment.setTerm(term);
-        payment.setPaymentDate(LocalDateTime.now());
+        payment.setPaymentDate(com.school.sms.util.TransactionDateUtil.toTransactionDateTime(transactionDate));
         payment.setRecordedByUserId(recordedByUserId);
         payment.setNotes(notes);
 
@@ -47,8 +48,9 @@ public class PaymentService {
         double newBalance = owed - totalPaid;
 
         auditLog.log(recordedByUserId, "RECORD_PAYMENT",
-                String.format("Receipt #%d: %s paid UGX %,.0f for %s. New balance: UGX %,.0f",
-                        payment.getReceiptNumber(), student.getFullName(), amount, term, newBalance));
+                String.format("Receipt #%d: %s paid UGX %,.0f for %s on %s. New balance: UGX %,.0f",
+                        payment.getReceiptNumber(), student.getFullName(), amount, term,
+                        payment.getPaymentDate().format(com.school.sms.util.DateTimeUtil.DATE_ONLY), newBalance));
 
         // Notify parent — tries father first, falls back to mother/guardian.
         Guardian recipient = null;

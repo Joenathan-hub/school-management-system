@@ -22,6 +22,11 @@ public class WorkerService {
     /** Only the administrator can add workers. */
     public Worker addWorker(User actingUser, String fullName, String jobTitle, String contact,
                              double monthlySalary) {
+        return addWorker(actingUser, fullName, jobTitle, contact, monthlySalary, LocalDate.now());
+    }
+
+    public Worker addWorker(User actingUser, String fullName, String jobTitle, String contact,
+                            double monthlySalary, LocalDate dateJoined) {
         requireAdmin(actingUser, "add a worker");
 
         String schoolInitials = settingsDAO.get("school.initials", "SCH");
@@ -33,7 +38,7 @@ public class WorkerService {
         worker.setFullName(fullName);
         worker.setJobTitle(jobTitle);
         worker.setContact(contact);
-        worker.setDateJoined(LocalDate.now());
+        worker.setDateJoined(dateJoined != null ? dateJoined : LocalDate.now());
         worker.setMonthlySalary(monthlySalary);
         worker.setActive(true);
 
@@ -61,13 +66,15 @@ public class WorkerService {
      * monthly salary and notifies them by SMS with amount paid and balance.
      * Returns the exact date/time the payment was recorded (day/month/year, 24-hour clock).
      */
-    public WorkerPaymentResult payWorker(User actingUser, Worker worker, double amount, String forMonth, String notes) {
+    public WorkerPaymentResult payWorker(User actingUser, Worker worker, double amount, String forMonth, String notes,
+                                          java.time.LocalDate transactionDate) {
         if (actingUser.getRole() != Role.BURSAR && actingUser.getRole() != Role.ADMINISTRATOR) {
             throw new SecurityException("Only the bursar or administrator can pay workers.");
         }
 
-        com.school.sms.model.WorkerPayment payment =
-                workerPaymentDAO.insert(worker.getId(), amount, forMonth, actingUser.getId(), notes);
+        com.school.sms.model.WorkerPayment payment = workerPaymentDAO.insert(
+                worker.getId(), amount, forMonth, actingUser.getId(), notes,
+                com.school.sms.util.TransactionDateUtil.toTransactionDateTime(transactionDate));
 
         double totalPaid = workerPaymentDAO.totalPaidForMonth(worker.getId(), forMonth);
         double balance = worker.getMonthlySalary() - totalPaid;

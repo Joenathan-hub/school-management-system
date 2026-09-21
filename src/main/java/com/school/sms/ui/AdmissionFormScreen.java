@@ -49,6 +49,9 @@ public class AdmissionFormScreen {
         boardingBox.setValue("Day");
         grid.add(sectionLabel("Boarding Status:"), 0, row); grid.add(boardingBox, 1, row++);
 
+        DatePicker admissionDateField = new DatePicker(java.time.LocalDate.now());
+        grid.add(sectionLabel("Date Reported:"), 0, row); grid.add(admissionDateField, 1, row++);
+
         grid.add(new Separator(), 0, row++, 2, 1);
         grid.add(heading("Father's Details"), 0, row++, 2, 1);
 
@@ -113,7 +116,7 @@ public class AdmissionFormScreen {
                         Double.parseDouble(baseFeeField.getText().trim()),
                         Double.parseDouble(discountField.getText().trim()),
                         discountReasonField.getText(),
-                        user.getId()
+                        user.getId(), admissionDateField.getValue()
                 );
 
                 status.getStyleClass().setAll("status-success");

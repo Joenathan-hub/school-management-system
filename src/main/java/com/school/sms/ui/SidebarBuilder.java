@@ -54,6 +54,7 @@ public class SidebarBuilder {
             buttons.getChildren().add(navButton("View / Print Report Card", () -> ReportCardScreen.show(stage, user)));
             buttons.getChildren().add(navButton("Search Students", () -> AdvancedSearchScreen.show(stage, user)));
             buttons.getChildren().add(navButton("Set Term Fees", () -> FeeStructureScreen.show(stage, user)));
+            buttons.getChildren().add(navButton("Correct Record Dates", () -> DateCorrectionScreen.show(stage, user)));
         }
 
         if (user.getRole() == Role.BURSAR) {

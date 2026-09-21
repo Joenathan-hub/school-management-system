@@ -28,8 +28,8 @@ public class PaymentDAO {
 
     public int insert(Payment p) {
         String sql = """
-            INSERT INTO Payments (receiptNumber, studentId, amount, term, paymentDate, recordedByUserId, notes)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO Payments (receiptNumber, studentId, amount, term, paymentDate, recordedAt, recordedByUserId, notes)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """;
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -37,9 +37,12 @@ public class PaymentDAO {
             ps.setInt(2, p.getStudentId());
             ps.setDouble(3, p.getAmount());
             ps.setString(4, p.getTerm());
+            // paymentDate = when the money actually changed hands (user-editable)
             ps.setTimestamp(5, Timestamp.valueOf(p.getPaymentDate()));
-            ps.setInt(6, p.getRecordedByUserId());
-            ps.setString(7, p.getNotes());
+            // recordedAt = when it was entered here (always now, never editable)
+            ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(7, p.getRecordedByUserId());
+            ps.setString(8, p.getNotes());
             ps.executeUpdate();
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) return keys.getInt(1);
@@ -48,6 +51,19 @@ public class PaymentDAO {
             throw new RuntimeException("Failed to insert payment: " + e.getMessage(), e);
         }
         return -1;
+    }
+
+    /** Corrects the transaction date of an existing payment. Never touches recordedAt. */
+    public void updateTransactionDate(int paymentId, LocalDateTime newDate) {
+        String sql = "UPDATE Payments SET paymentDate = ? WHERE id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setTimestamp(1, Timestamp.valueOf(newDate));
+            ps.setInt(2, paymentId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update payment date: " + e.getMessage(), e);
+        }
     }
 
     public List<Payment> findByStudent(int studentId) {
@@ -65,7 +81,6 @@ public class PaymentDAO {
         return results;
     }
 
-    /** All payments, for printing/exporting the full payments list. */
     public List<Payment> findAll() {
         List<Payment> results = new ArrayList<>();
         String sql = "SELECT * FROM Payments ORDER BY paymentDate DESC";
@@ -100,6 +115,8 @@ public class PaymentDAO {
         p.setTerm(rs.getString("term"));
         Timestamp ts = rs.getTimestamp("paymentDate");
         p.setPaymentDate(ts != null ? ts.toLocalDateTime() : LocalDateTime.now());
+        Timestamp rec = rs.getTimestamp("recordedAt");
+        p.setRecordedAt(rec != null ? rec.toLocalDateTime() : null);
         p.setRecordedByUserId(rs.getInt("recordedByUserId"));
         p.setNotes(rs.getString("notes"));
         return p;

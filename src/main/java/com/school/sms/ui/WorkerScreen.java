@@ -41,6 +41,9 @@ public class WorkerScreen {
             contactField.setPromptText("Contact, e.g. 0771234567");
             TextField salaryField = new TextField();
             salaryField.setPromptText("Monthly salary (UGX)");
+            DatePicker dateJoinedField = new DatePicker(java.time.LocalDate.now());
+            Label dateJoinedLabel = new Label("Date worker started:");
+            dateJoinedLabel.getStyleClass().add("field-label");
             Button addBtn = new Button("Add Worker");
             addBtn.getStyleClass().add("primary-button");
             Label addStatus = new Label();
@@ -48,7 +51,7 @@ public class WorkerScreen {
             addBtn.setOnAction(e -> {
                 try {
                     Worker w = workerService.addWorker(user, nameField.getText(), titleField.getText(),
-                            contactField.getText(), Double.parseDouble(salaryField.getText().trim()));
+                            contactField.getText(), Double.parseDouble(salaryField.getText().trim()), dateJoinedField.getValue());
                     addStatus.getStyleClass().setAll("status-success");
                     addStatus.setText("Added! Worker ID: " + w.getWorkerId());
                 } catch (NumberFormatException ex) {
@@ -60,7 +63,8 @@ public class WorkerScreen {
                 }
             });
 
-            addCard.getChildren().addAll(addTitle, nameField, titleField, contactField, salaryField, addBtn, addStatus);
+            addCard.getChildren().addAll(addTitle, nameField, titleField, contactField, salaryField,
+                    dateJoinedLabel, dateJoinedField, addBtn, addStatus);
             root.getChildren().add(addCard);
         }
 
@@ -94,6 +98,9 @@ public class WorkerScreen {
         forMonthField.setPromptText("For month, e.g. June 2026");
         TextField payAmountField = new TextField();
         payAmountField.setPromptText("Amount to pay (UGX)");
+        DatePicker payDateField = new DatePicker(java.time.LocalDate.now());
+        Label payDateLabel = new Label("Date payment was made:");
+        payDateLabel.getStyleClass().add("field-label");
         Button payBtn = new Button("Pay Worker");
         payBtn.getStyleClass().add("primary-button");
         Button removeBtn = new Button("Remove Worker");
@@ -111,7 +118,7 @@ public class WorkerScreen {
             try {
                 double amount = Double.parseDouble(payAmountField.getText().trim());
                 WorkerService.WorkerPaymentResult result =
-                        workerService.payWorker(user, selected, amount, forMonthField.getText(), "");
+                        workerService.payWorker(user, selected, amount, forMonthField.getText(), "", payDateField.getValue());
                 payStatus.getStyleClass().setAll("status-success");
                 payStatus.setText(String.format("Paid at %s. Balance for %s: UGX %,.0f",
                         result.payment.getPaymentDateTime().format(com.school.sms.util.DateTimeUtil.DATE_TIME),
@@ -174,7 +181,7 @@ public class WorkerScreen {
                 payTitle,
                 new HBox(8, searchField, searchBtn),
                 resultsList,
-                forMonthField, payAmountField,
+                forMonthField, payAmountField, payDateLabel, payDateField,
                 new HBox(10, payBtn, removeBtn),
                 payStatus,
                 new HBox(10, printWorkers, exportWorkers)

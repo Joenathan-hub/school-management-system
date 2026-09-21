@@ -46,6 +46,10 @@ public class PaymentScreen {
         TextField notesField = new TextField();
         notesField.setPromptText("Notes (optional)");
 
+        DatePicker paymentDateField = new DatePicker(java.time.LocalDate.now());
+        Label paymentDateLabel = new Label("Date payment was made:");
+        paymentDateLabel.getStyleClass().add("field-label");
+
         Button recordBtn = new Button("Record Payment");
         recordBtn.getStyleClass().add("primary-button");
         Button printBtn = new Button("Print Last Receipt");
@@ -78,7 +82,8 @@ public class PaymentScreen {
             try {
                 double amount = Double.parseDouble(amountField.getText().trim());
                 PaymentService.PaymentResult result = paymentService.recordPayment(
-                        loadedStudent[0], termField.getText(), amount, notesField.getText(), user.getId());
+                        loadedStudent[0], termField.getText(), amount, notesField.getText(), user.getId(),
+                        paymentDateField.getValue());
 
                 lastResult[0] = result;
                 printBtn.setDisable(false);
@@ -112,6 +117,7 @@ public class PaymentScreen {
                 new Separator(),
                 sectionTwo,
                 termField, amountField, notesField,
+                paymentDateLabel, paymentDateField,
                 new HBox(8, recordBtn, printBtn),
                 status,
                 back

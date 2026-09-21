@@ -24,6 +24,14 @@ public class StudentService {
                                  Guardian father, Guardian mother,
                                  String term, double baseFee, double discount, String discountReason,
                                  int recordedByUserId) {
+        return admitStudent(fullName, age, sex, studentClass, boardingStatus, father, mother,
+                term, baseFee, discount, discountReason, recordedByUserId, LocalDate.now());
+    }
+
+    public Student admitStudent(String fullName, int age, String sex, String studentClass, String boardingStatus,
+                                Guardian father, Guardian mother,
+                                String term, double baseFee, double discount, String discountReason,
+                                int recordedByUserId, LocalDate admissionDate) {
 
         int fatherId = father != null ? guardianDAO.insert(father) : 0;
         int motherId = mother != null ? guardianDAO.insert(mother) : 0;
@@ -43,7 +51,7 @@ public class StudentService {
         student.setSex(sex);
         student.setStudentClass(studentClass);
         student.setBoardingStatus(boardingStatus);
-        student.setAdmissionDate(LocalDate.now());
+        student.setAdmissionDate(admissionDate != null ? admissionDate : LocalDate.now());
         student.setFatherId(fatherId);
         student.setMotherId(motherId);
         student.setActive(true);

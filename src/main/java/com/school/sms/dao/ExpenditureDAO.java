@@ -11,14 +11,15 @@ import java.util.List;
 public class ExpenditureDAO {
 
     public int insert(Expenditure e) {
-        String sql = "INSERT INTO Expenditures (description, amount, category, expenditureDate, recordedByUserId) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Expenditures (description, amount, category, expenditureDate, recordedAt, recordedByUserId) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, e.getDescription());
             ps.setDouble(2, e.getAmount());
             ps.setString(3, e.getCategory());
             ps.setTimestamp(4, Timestamp.valueOf(e.getDate()));
-            ps.setInt(5, e.getRecordedByUserId());
+            ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(6, e.getRecordedByUserId());
             ps.executeUpdate();
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) return keys.getInt(1);
@@ -27,6 +28,18 @@ public class ExpenditureDAO {
             throw new RuntimeException("Failed to insert expenditure: " + ex.getMessage(), ex);
         }
         return -1;
+    }
+
+    public void updateTransactionDate(int expenditureId, LocalDateTime newDate) {
+        String sql = "UPDATE Expenditures SET expenditureDate = ? WHERE id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setTimestamp(1, Timestamp.valueOf(newDate));
+            ps.setInt(2, expenditureId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update expenditure date: " + e.getMessage(), e);
+        }
     }
 
     public List<Expenditure> findAll() {
@@ -62,6 +75,8 @@ public class ExpenditureDAO {
         e.setCategory(rs.getString("category"));
         Timestamp ts = rs.getTimestamp("expenditureDate");
         e.setDate(ts != null ? ts.toLocalDateTime() : LocalDateTime.now());
+        Timestamp rec = rs.getTimestamp("recordedAt");
+        e.setRecordedAt(rec != null ? rec.toLocalDateTime() : null);
         e.setRecordedByUserId(rs.getInt("recordedByUserId"));
         return e;
     }

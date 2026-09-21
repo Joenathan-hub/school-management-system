@@ -123,6 +123,19 @@ public class StudentDAO {
         return results;
     }
 
+    /** Corrects the date a student reported without changing other admission data. */
+    public void updateAdmissionDate(int studentId, LocalDate admissionDate) {
+        String sql = "UPDATE Students SET admissionDate = ? WHERE id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, Date.valueOf(admissionDate));
+            ps.setInt(2, studentId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update student reporting date: " + e.getMessage(), e);
+        }
+    }
+
     private Student map(ResultSet rs) throws SQLException {
         Student s = new Student();
         s.setId(rs.getInt("id"));

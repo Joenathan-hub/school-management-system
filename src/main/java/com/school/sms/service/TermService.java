@@ -9,6 +9,7 @@ import com.school.sms.model.Term;
 import com.school.sms.model.User;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -48,6 +49,10 @@ public class TermService {
     }
 
     public RolloverSummary startNewTerm(String newTermName, User admin) {
+        return startNewTerm(newTermName, admin, LocalDate.now());
+    }
+
+    public RolloverSummary startNewTerm(String newTermName, User admin, LocalDate startDate) {
         Term currentActive = termDAO.findActive();
         String previousTermName = currentActive != null ? currentActive.getName() : null;
 
@@ -58,7 +63,7 @@ public class TermService {
         Term newTerm = new Term();
         newTerm.setName(newTermName);
         newTerm.setStatus("ACTIVE");
-        newTerm.setStartDate(LocalDateTime.now());
+        newTerm.setStartDate(com.school.sms.util.TransactionDateUtil.toTransactionDateTime(startDate));
         termDAO.insert(newTerm);
 
         RolloverSummary summary = new RolloverSummary();

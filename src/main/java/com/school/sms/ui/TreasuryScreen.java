@@ -57,6 +57,10 @@ public class TreasuryScreen {
         ComboBox<String> categoryBox = new ComboBox<>();
         categoryBox.getItems().addAll("Supplies", "Salaries", "Maintenance", "Utilities", "Other");
         categoryBox.setValue("Other");
+        DatePicker expDateField = new DatePicker(java.time.LocalDate.now());
+        Label expDateLabel = new Label("Date purchase/payment was made:");
+        expDateLabel.getStyleClass().add("field-label");
+
         Button recordExpBtn = new Button("Record Expenditure");
         recordExpBtn.getStyleClass().add("primary-button");
         Label expStatus = new Label();
@@ -67,7 +71,7 @@ public class TreasuryScreen {
                 exp.setDescription(descField.getText());
                 exp.setAmount(Double.parseDouble(amountField.getText().trim()));
                 exp.setCategory(categoryBox.getValue());
-                exp.setDate(java.time.LocalDateTime.now());
+                exp.setDate(com.school.sms.util.TransactionDateUtil.toTransactionDateTime(expDateField.getValue()));
                 exp.setRecordedByUserId(user.getId());
                 expenditureDAO.insert(exp);
                 expStatus.getStyleClass().setAll("status-success");
@@ -83,7 +87,7 @@ public class TreasuryScreen {
             }
         });
 
-        expCard.getChildren().addAll(expTitle, descField, amountField, categoryBox, recordExpBtn, expStatus);
+        expCard.getChildren().addAll(expTitle, descField, amountField, categoryBox, expDateLabel, expDateField, recordExpBtn, expStatus);
 
         // --- Print buttons ---
         Button printPayments = new Button("Print Payments List");

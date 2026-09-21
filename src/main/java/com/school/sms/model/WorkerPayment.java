@@ -10,6 +10,10 @@ public class WorkerPayment {
     private LocalDateTime paymentDateTime; // day/month/year + 24-hour time, per school policy
     private int recordedByUserId;
     private String notes;
+    private java.time.LocalDateTime recordedAt;
+
+    public java.time.LocalDateTime getRecordedAt() { return recordedAt; }
+    public void setRecordedAt(java.time.LocalDateTime recordedAt) { this.recordedAt = recordedAt; }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

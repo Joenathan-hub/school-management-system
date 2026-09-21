@@ -48,6 +48,10 @@ public class TermManagementScreen {
         TextField newTermField = new TextField();
         newTermField.setPromptText("New term name (e.g. Term 2 2026)");
 
+        DatePicker startDateField = new DatePicker(java.time.LocalDate.now());
+        Label startDateLabel = new Label("Date term started:");
+        startDateLabel.getStyleClass().add("field-label");
+
         Button startBtn = new Button("Start New Term");
         startBtn.getStyleClass().add("primary-button");
         Label startStatus = new Label();
@@ -66,7 +70,7 @@ public class TermManagementScreen {
             confirm.setHeaderText(null);
             confirm.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.YES) {
-                    TermService.RolloverSummary summary = termService.startNewTerm(name, user);
+                    TermService.RolloverSummary summary = termService.startNewTerm(name, user, startDateField.getValue());
                     startStatus.getStyleClass().setAll("status-success");
                     startStatus.setText(String.format(
                             "%s started. %d student(s) processed, UGX %,.0f carried forward from %s.",
@@ -77,7 +81,7 @@ public class TermManagementScreen {
             });
         });
 
-        startCard.getChildren().addAll(startTitle, warning, newTermField, startBtn, startStatus);
+        startCard.getChildren().addAll(startTitle, warning, newTermField, startDateLabel, startDateField, startBtn, startStatus);
 
         VBox historyCard = new VBox(8);
         historyCard.getStyleClass().add("card");

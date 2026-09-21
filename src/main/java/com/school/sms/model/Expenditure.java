@@ -9,8 +9,12 @@ public class Expenditure {
     private String category;       // e.g. "Supplies", "Salaries", "Maintenance"
     private LocalDateTime date;
     private int recordedByUserId;  // audit trail
+    private java.time.LocalDateTime recordedAt;
 
     public Expenditure() {}
+
+    public java.time.LocalDateTime getRecordedAt() { return recordedAt; }
+    public void setRecordedAt(java.time.LocalDateTime recordedAt) { this.recordedAt = recordedAt; }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
