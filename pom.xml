@@ -60,6 +60,34 @@
         </dependency>
 
         <!--
+          Base theme. AtlantaFX (Primer flavour) supplies the user-agent
+          stylesheet that every control this design does not restyle itself
+          inherits its structure from: scrollbars, combo box popups, context
+          menus, tooltips, table headers, spinners, date pickers and focus
+          rings. The design's own token sheets redirect AtlantaFX's token
+          variables at the palette, so those inherited controls are painted in
+          this application's palette and not in Primer's own greys (see
+          src/main/resources/css/tokens-light.css, "base-theme bridge").
+        -->
+        <dependency>
+            <groupId>io.github.mkpaz</groupId>
+            <artifactId>atlantafx-base</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <!-- Vector icons (FontAwesome 5 pack ships its own glyph fonts) -->
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-javafx</artifactId>
+            <version>12.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-fontawesome5-pack</artifactId>
+            <version>12.4.0</version>
+        </dependency>
+
+        <!--
           NOTE ON PRINTING: receipts, report cards, and list printing use
           JavaFX's built-in javafx.print API (see service/PrintService.java),
           which comes bundled with javafx-controls/javafx-graphics — no extra
@@ -107,6 +135,14 @@
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.school.sms.Launcher</mainClass>
                                 </transformer>
+                                <!--
+                                  Ikonli discovers its icon packs through
+                                  META-INF/services entries. Without this
+                                  transformer the shaded jar keeps only one
+                                  dependency's service file and every icon
+                                  silently disappears at runtime.
+                                -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
                             <filters>
                                 <filter>
