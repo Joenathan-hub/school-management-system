@@ -794,8 +794,10 @@
     -fx-alignment: CENTER;
 }
 
-.rail-collapsed { }
-
+/* The collapsed rail hides its labels, section headings and wordmark outright -
+ * never truncating them - and centres what is left. The class is applied by
+ * RailNav; the rail's width is not set here because Java owns that one
+ * dimension, so that the collapse can animate. */
 .rail-collapsed .rail-item {
     -fx-alignment: CENTER;                     /* icons centre when collapsed*/
     -fx-padding: 0;
