@@ -1,0 +1,117 @@
+/* ============================================================================
+ * TOKEN LAYER - LIGHT
+ * ----------------------------------------------------------------------------
+ * This file, and tokens-dark.css, are the ONLY places in the entire
+ * application where a colour literal is allowed to appear. Every rule in
+ * structure.css and components.css reference these variables and
+ * never a literal.
+ *
+ * Switching the whole application between light and dark is done by replacing
+ * exactly one stylesheet on the Scene (tokens-light.css <-> tokens-dark.css).
+ * There is no per-component conditional logic anywhere, and there is no second
+ * full stylesheet that could drift out of sync with this one.
+ *
+ * The palette below is fixed by the design specification. Do not "improve" the
+ * values; every pairing in it is contrast-audited (see docs/contrast-audit.md).
+ * ========================================================================= */
+
+.root {
+
+    /* ---- surfaces and text ------------------------------------------------ */
+    -color-canvas:          #FFFFFF;   /* application canvas                      */
+    -color-surface:         #FFFFFF;   /* cards, top bar, panels, popups          */
+    -color-surface-2:       #F6F8FA;   /* secondary surface, fills, table header  */
+    -color-border:          #D8DEE4;   /* the 1px hairline used everywhere        */
+    -color-text:            #1F2328;   /* primary text                            */
+    -color-text-muted:      #59636E;   /* secondary / muted text                  */
+
+    /* ---- brand ------------------------------------------------------------ */
+    -color-primary:         #0969DA;   /* brand primary                           */
+    -color-on-primary:      #FFFFFF;   /* text/glyph sitting on the brand colour  */
+    -color-accent:          #0969DA;   /* accent (equals primary in light mode)   */
+
+    /* ---- chart ------------------------------------------------------------ */
+    -color-chart-series:    #0969DA;   /* primary data series                     */
+    -color-chart-companion: #CFE3FA;   /* comparison series (pale companion)      */
+
+    /* ---- semantic pairs (background and foreground travel together) ------- */
+    -color-success-bg:      #DDF4E4;
+    -color-success-fg:      #0A5C2B;
+    -color-warning-bg:      #FBEFC8;
+    -color-warning-fg:      #6B4A00;
+    -color-danger-bg:       #FFE3E3;
+    -color-danger-fg:       #9E1B1B;
+
+    /* ---- focus, scrim, elevation ----------------------------------------- */
+    -color-focus-ring:      #0969DA;   /* focus ring, visible in both themes      */
+    -color-scrim:           rgba(31, 35, 40, 0.45);
+    -color-shadow:          rgba(31, 35, 40, 0.16);
+
+    /* ---- the rail --------------------------------------------------------- *
+     * The rail is a fixed dark rail and stays dark in BOTH modes. In light
+     * mode its darkness is what gives the interface its institutional weight,
+     * so it is deliberately not lightened here.                               */
+    -color-rail:            #0E1A2E;   /* rail fill                               */
+    -color-rail-border:     #1A2A44;   /* rail's right edge and internal dividers */
+    -color-rail-text:       #FFFFFF;   /* brand name, active item text            */
+    -color-rail-text-muted: #9AABC7;   /* section labels, inactive items          */
+    -color-rail-active-bg:  #1B3358;   /* active navigation item background       */
+    -color-rail-accent:     #8A6A0F;   /* brass - indicator and fill only         */
+    -color-rail-accent-deep: #7A5D0D;  /* deeper brass, used by the dark gradient */
+    -color-rail-accent-on:  #FFFFFF;   /* 5.06:1 on the brass tile above          */
+    -color-rail-tile-fill:  -color-rail-accent;   /* flat brass in light mode     */
+
+    /* ======================================================================
+     * Base-theme bridge.
+     * ----------------------------------------------------------------------
+     * AtlantaFX (Primer) is the base theme: every control this design does not
+     * explicitly style - scrollbars, combo box popups, context menus, tooltips,
+     * table headers, spinners, date pickers, focus rings - inherits its
+     * structure from there. The bridge below points AtlantaFX's own token names
+     * at the palette above, so those unstyled controls are painted in THIS
+     * palette rather than in Primer's greys. Without it the application would
+     * ship two competing palettes; with it there is exactly one.
+     *
+     * Note: -color-success-fg, -color-warning-fg and -color-danger-fg need no
+     * line here - they already carry this palette's names.
+     * ==================================================================== */
+    -color-fg-default:            -color-text;
+    -color-fg-muted:              -color-text-muted;
+    -color-fg-subtle:             -color-text-muted;
+    -color-fg-emphasis:           -color-on-primary;
+    -color-bg-default:            -color-surface;
+    -color-bg-overlay:            -color-surface;
+    -color-bg-subtle:             -color-surface-2;
+    -color-bg-inset:              -color-surface-2;
+    -color-canvas-default:        -color-canvas;
+    -color-canvas-subtle:         -color-surface-2;
+    -color-canvas-inset:          -color-surface-2;
+    -color-canvas-overlay:        -color-surface;
+    -color-border-default:        -color-border;
+    -color-border-muted:          -color-border;
+    -color-border-subtle:         -color-border;
+    -color-shadow-default:        -color-border;
+    -color-neutral-emphasis-plus: -color-text;
+    -color-neutral-emphasis:      -color-text-muted;
+    -color-neutral-muted:         -color-surface-2;
+    -color-neutral-subtle:        -color-surface-2;
+    -color-accent-fg:             -color-primary;
+    -color-accent-emphasis:       -color-primary;
+    -color-accent-muted:          -color-chart-companion;
+    -color-accent-subtle:         -color-chart-companion;
+    -color-success-emphasis:      -color-success-fg;
+    -color-success-muted:         -color-success-bg;
+    -color-success-subtle:        -color-success-bg;
+    -color-warning-emphasis:      -color-warning-fg;
+    -color-warning-muted:         -color-warning-bg;
+    -color-warning-subtle:        -color-warning-bg;
+    -color-danger-emphasis:       -color-danger-fg;
+    -color-danger-muted:          -color-danger-bg;
+    -color-danger-subtle:         -color-danger-bg;
+    -color-chart-1:               -color-chart-series;
+    -color-chart-2:               -color-chart-companion;
+    -color-chart-1-alpha20:       -color-chart-companion;
+    -color-chart-2-alpha20:       -color-chart-companion;
+    -color-chart-1-alpha70:       -color-chart-series;
+    -color-chart-2-alpha70:       -color-chart-series;
+}

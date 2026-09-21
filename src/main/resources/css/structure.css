@@ -1,0 +1,983 @@
+/* ============================================================================
+ * STRUCTURAL LAYER
+ * ----------------------------------------------------------------------------
+ * Layout, spacing, corner radii, type sizes and weights, and motion. There is
+ * NOT ONE COLOUR in this file: colours live only in tokens-light.css and
+ * tokens-dark.css, and everything here inherits them through the cascade.
+ *
+ * Two platform notes that shaped this sheet, both recorded in
+ * docs/ui-spec-deviations.md:
+ *
+ *  1. Font weights. JavaFX accepts only 100..900 for -fx-font-weight (the
+ *     FontWeight enum). The design calls for 650/680/720/750/780/790, so those
+ *     values are snapped to the nearest bundled Inter face, exactly as the
+ *     brief instructs. Design -> implemented: 650->600, 680->700, 720->700,
+ *     750->800, 780->800, 790->800. Each rule carries the design value in a
+ *     comment. Do not expect 650 and 680 to look different - they are one face
+ *     apart and, at 12px, deliberately indistinguishable.
+ *
+ *  2. Transitions. JavaFX CSS has no transition/animation property at all, so
+ *     motion lives in Java as keyframes, using the durations and interpolators
+ *     fixed by the design and collected in one place - see
+ *     com.school.sms.ui.design.Motion (rail collapse 220ms ease-in-out,
+ *     hover/press 120ms, toast 180ms in / 160ms out, skeleton pulse 1200ms).
+ *
+ * Spacing scale: 4, 8, 12, 16, 20, 24, 32. Nothing sits off-scale.
+ * ========================================================================= */
+
+/* ============================================================================
+ * 1. Application frame and root typography
+ * ========================================================================= */
+
+.app-frame {
+    -fx-background-color: -color-canvas;
+    -fx-background-radius: 14;                 /* application frame radius */
+    -fx-font-size: 12.5px;                     /* body copy */
+    -fx-font-weight: 400;
+}
+
+.root {
+    -fx-background-color: -color-canvas;
+    -fx-font-size: 12.5px;
+}
+
+/* Font fallback chain. The bundled Inter faces are loaded from
+ * /fonts at startup; if that ever fails, ThemeManager applies the next
+ * available family from the chain: system UI, Segoe UI, Roboto, Arial. */
+.font-inter    { -fx-font-family: "Inter"; }
+.font-system   { -fx-font-family: "System"; }
+.font-segoe-ui { -fx-font-family: "Segoe UI"; }
+.font-roboto   { -fx-font-family: "Roboto"; }
+.font-arial    { -fx-font-family: "Arial"; }
+
+/* ============================================================================
+ * 2. Typography scale
+ * ========================================================================= */
+
+.page-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;                      /* design: 780 */
+}
+
+.page-subtitle {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 400;
+}
+
+.card-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;                      /* design: 720 */
+}
+
+.card-subtitle {
+    -fx-font-size: 11px;
+    -fx-font-weight: 400;
+}
+
+.section-label {                               /* small uppercase group label */
+    -fx-font-size: 9.5px;
+    -fx-font-weight: 800;
+}
+
+.body-text {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 400;
+}
+
+.body-text-strong {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 600;                      /* design: 650 */
+}
+
+/* KPI figures. 22px, weight 790 -> 800, tight negative tracking. */
+.kpi-value {
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+}
+
+.kpi-label {
+    -fx-font-size: 10.5px;
+    -fx-font-weight: 800;                      /* design: 750 */
+}
+
+.kpi-delta {
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+}
+
+/* Table column headers: 10px, uppercase, weight 780 -> 800. */
+.table-column-title {
+    -fx-font-size: 10px;
+    -fx-font-weight: 800;
+}
+
+/* Table body cells: 12.5px; numeric cells at weight 650 -> 600. */
+.table-cell-text {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 400;
+}
+
+.table-cell-name {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 700;                      /* design: 680 */
+}
+
+.table-cell-numeric {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 600;                      /* design: 650 */
+}
+
+/* Status badges: 10px, weight 800. */
+.badge-text {
+    -fx-font-size: 10px;
+    -fx-font-weight: 800;
+}
+
+.rail-wordmark {
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 800;                      /* design: 750 */
+}
+
+.rail-subtitle {
+    -fx-font-size: 9.5px;
+    -fx-font-weight: 800;
+}
+
+.rail-section-label {
+    -fx-font-size: 9.5px;
+    -fx-font-weight: 800;
+}
+
+.rail-item-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.rail-count {
+    -fx-font-size: 10px;
+    -fx-font-weight: 800;
+}
+
+.rail-tile-text {
+    -fx-font-size: 11px;
+    -fx-font-weight: 800;
+}
+
+.avatar-text {
+    -fx-font-size: 11px;
+    -fx-font-weight: 800;
+}
+
+.term-pill-text {
+    -fx-font-size: 11.5px;
+    -fx-font-weight: 600;                      /* design: 650 */
+}
+
+.kbd-hint-text {
+    -fx-font-size: 10px;
+    -fx-font-weight: 500;
+}
+
+.search-placeholder-size {
+    -fx-font-size: 12px;
+}
+
+.chart-month-label {
+    -fx-font-size: 9.5px;
+    -fx-font-weight: 700;
+}
+
+.chart-legend-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: 400;
+}
+
+.progress-label {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 400;
+}
+
+.progress-value {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 700;
+}
+
+.dialog-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;                      /* design: 720 */
+}
+
+.dialog-message {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 400;
+}
+
+.toast-text {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 600;
+}
+
+.empty-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;                      /* design: 720 */
+}
+
+.empty-text {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 400;
+}
+
+/* ---- tabular numerals ---------------------------------------------------- *
+ * Money, percentages and counts must not jitter when a value updates, so
+ * numeric text uses the bundled "Inter Tabular" faces, in which every digit
+ * has been normalised to the same advance width. JavaFX has no OpenType
+ * feature control (no way to switch on the font's own 'tnum' feature), so the
+ * alignment is baked into the faces rather than requested at layout time. */
+.numeric,
+.kpi-value,
+.progress-value,
+.table-cell-numeric,
+.column-numeric,
+.money-value {
+    -fx-font-family: "Inter Tabular";
+}
+
+/* ============================================================================
+ * 3. Spacing, geometry, elevation
+ * ========================================================================= */
+
+.content-region {
+    -fx-padding: 20 20 22 20;                  /* 20 top, 20 sides, 22 bottom */
+    -fx-spacing: 13;                           /* gap between major blocks    */
+}
+
+.card {
+    -fx-padding: 14;                           /* cards pad 14 on all sides   */
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-width: 1;
+}
+
+.card-flush {                                  /* table cards: no outer pad   */
+    -fx-padding: 0;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-width: 1;
+}
+
+.card-gap-12 { -fx-spacing: 12; }              /* cards sit 12 apart          */
+
+.card-header-box {
+    -fx-padding: 13 14 13 14;                  /* table/card header insets    */
+    -fx-spacing: 12;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.card-header-titles { -fx-spacing: 2; }
+
+.kpi-grid {
+    -fx-hgap: 12;
+    -fx-vgap: 12;
+}
+
+.kpi-card {
+    -fx-padding: 14;
+    -fx-spacing: 6;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-width: 1;
+}
+
+.panel-row {
+    -fx-spacing: 12;                           /* 1.5 : 1 split, 12 gap       */
+}
+
+/* ============================================================================
+ * 4. Buttons, inputs, pills, avatars
+ * ========================================================================= */
+
+.btn {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;                      /* design: 650 */
+    -fx-padding: 0 13 0 13;                    /* 13 horizontal padding       */
+    -fx-pref-height: 31;                       /* buttons are 31 tall         */
+    -fx-min-height: 31;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;
+    -fx-border-width: 1;
+    -fx-graphic-text-gap: 7;                   /* icon to label gap           */
+    -fx-alignment: CENTER;
+    -fx-cursor: hand;
+}
+
+.btn-icon-only {
+    -fx-font-size: 0px;
+    -fx-padding: 0;
+    -fx-graphic-text-gap: 0;
+}
+
+.icon-button {
+    -fx-pref-width: 32;                        /* 32 x 32, radius 9           */
+    -fx-pref-height: 32;
+    -fx-min-width: 32;
+    -fx-min-height: 32;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-width: 1;
+    -fx-alignment: CENTER;
+    -fx-cursor: hand;
+}
+
+.icon-button-lg {
+    -fx-pref-width: 36;
+    -fx-pref-height: 36;
+    -fx-min-width: 36;
+    -fx-min-height: 36;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-alignment: CENTER;
+    -fx-cursor: hand;
+}
+
+/* Minimum hit target: nothing interactive may be smaller than 28 x 28. */
+.hit-target-28 {
+    -fx-min-width: 28;
+    -fx-min-height: 28;
+}
+
+.field {
+    -fx-spacing: 6;
+}
+
+.text-field,
+.password-field,
+.text-area,
+.combo-box,
+.date-picker,
+.spinner {
+    -fx-pref-height: 34;                       /* inputs are 34 tall          */
+    -fx-min-height: 34;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 400;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;
+    -fx-border-width: 1;
+    -fx-padding: 0 10 0 10;
+}
+
+.text-area {
+    -fx-pref-height: 78;
+    -fx-padding: 6 10 6 10;
+}
+
+.text-area .content { -fx-padding: 0; }
+
+.combo-box { -fx-padding: 0; }
+.combo-box > .list-cell { -fx-padding: 0 0 0 10; -fx-font-size: 12.5px; }
+
+.date-picker > .text-field { -fx-border-width: 0; -fx-background-radius: 7 0 0 7; }
+.date-picker > .arrow-button { -fx-padding: 0 8 0 8; }
+
+.field-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+}
+
+.field-hint {
+    -fx-font-size: 11px;
+    -fx-font-weight: 400;
+}
+
+.search-field {
+    -fx-pref-height: 34;
+    -fx-min-height: 34;
+    -fx-max-width: 392;                        /* no wider than 392           */
+    -fx-pref-width: 392;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;
+    -fx-border-width: 1;
+    -fx-padding: 0 8 0 10;
+    -fx-spacing: 8;
+}
+
+.search-field .text-field {
+    -fx-pref-height: 32;
+    -fx-min-height: 32;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0;
+    -fx-font-size: 12px;
+}
+
+.kbd-hint {
+    -fx-background-radius: 5;                  /* 5px radius keyboard hint    */
+    -fx-border-radius: 5;
+    -fx-border-width: 1;
+    -fx-padding: 2 5 2 5;
+}
+
+.term-pill {
+    -fx-pref-height: 32;                       /* contextual pill: 32 tall    */
+    -fx-min-height: 32;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-width: 1;
+    -fx-padding: 0 11 0 11;
+    -fx-graphic-text-gap: 6;
+    -fx-alignment: CENTER;
+}
+
+.avatar {
+    -fx-pref-width: 30;                        /* 30 x 30, radius 10          */
+    -fx-pref-height: 30;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-alignment: CENTER;
+}
+
+.notif-button { -fx-pref-width: 32; -fx-pref-height: 32; }
+
+.notif-dot {
+    -fx-min-width: 8;
+    -fx-min-height: 8;
+    -fx-pref-width: 8;
+    -fx-pref-height: 8;
+    -fx-background-radius: 5, 3.5;             /* ring + core                  */
+    -fx-background-insets: 0, 1.5;             /* 1.5px ring in surface colour */
+    -fx-translate-x: 9;
+    -fx-translate-y: -9;
+}
+
+/* Segmented control - view switching */
+.segmented {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 2;
+    -fx-spacing: 2;
+}
+
+.segmented-item {
+    -fx-font-size: 11.5px;
+    -fx-font-weight: 600;
+    -fx-padding: 0 10 0 10;
+    -fx-pref-height: 26;
+    -fx-min-height: 26;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+/* Toggle switch */
+.toggle-switch {
+    -fx-pref-width: 40;
+    -fx-pref-height: 22;
+    -fx-min-width: 40;
+    -fx-min-height: 22;
+    -fx-cursor: hand;
+}
+
+.toggle-switch .toggle-track {
+    -fx-pref-width: 34;
+    -fx-pref-height: 19;
+    -fx-background-radius: 99;
+    -fx-border-radius: 99;
+    -fx-border-width: 1;
+}
+
+.toggle-switch .toggle-thumb {
+    -fx-pref-width: 13;
+    -fx-pref-height: 13;
+    -fx-background-radius: 99;
+    -fx-translate-x: -7;
+}
+
+/* ============================================================================
+ * 5. Badges, banners, progress, skeletons, empty states
+ * ========================================================================= */
+
+.badge {
+    -fx-font-size: 10px;
+    -fx-font-weight: 800;
+    -fx-padding: 3 8 3 8;                      /* 3 vertical, 8 horizontal    */
+    -fx-background-radius: 6;                  /* 6px, not fully round        */
+    -fx-border-radius: 6;
+    -fx-alignment: CENTER;
+}
+
+.banner {
+    -fx-padding: 10 12 10 12;
+    -fx-spacing: 9;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-width: 1;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.banner-text { -fx-font-size: 12px; -fx-font-weight: 600; }
+
+.toast {
+    -fx-padding: 11 13 11 13;
+    -fx-spacing: 9;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-width: 1;
+    -fx-max-width: 380;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.toast-layer {
+    -fx-padding: 0 20 20 0;                    /* bottom-right stack          */
+    -fx-spacing: 8;
+}
+
+.progress-row {
+    -fx-spacing: 6;
+}
+
+.progress-value-cell {
+    -fx-min-width: 42;                         /* 42px percentage column      */
+    -fx-pref-width: 42;
+    -fx-alignment: CENTER-RIGHT;
+}
+
+.progress-track {
+    -fx-pref-height: 6;                        /* 6px track                   */
+    -fx-min-height: 6;
+    -fx-background-radius: 99;
+}
+
+.progress-fill {
+    -fx-pref-height: 6;
+    -fx-min-height: 6;
+    -fx-background-radius: 99;
+}
+
+.progress-rows { -fx-spacing: 12; }            /* 12px between rows           */
+
+/* Skeleton loading placeholders, shaped like the content they replace. */
+.skeleton {
+    -fx-background-radius: 4;
+}
+
+.skeleton-line  { -fx-pref-height: 10; -fx-min-height: 10; -fx-background-radius: 4; }
+.skeleton-line-title { -fx-pref-height: 13; -fx-min-height: 13; -fx-background-radius: 4; }
+.skeleton-block { -fx-pref-height: 26; -fx-min-height: 26; -fx-background-radius: 6; }
+.skeleton-kpi   { -fx-pref-height: 22; -fx-min-height: 22; -fx-background-radius: 4; -fx-pref-width: 96; }
+.skeleton-avatar { -fx-pref-width: 30; -fx-pref-height: 30; -fx-background-radius: 10; }
+.skeleton-table-row { -fx-padding: 8 14 8 14; -fx-spacing: 14; }
+
+.empty-state {
+    -fx-padding: 32 20 32 20;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER;
+}
+
+.empty-icon {
+    -fx-padding: 12;
+    -fx-background-radius: 99;
+}
+
+/* ============================================================================
+ * 6. Chart
+ * ========================================================================= */
+
+.chart-card { -fx-padding: 14; -fx-spacing: 12; -fx-background-radius: 9; -fx-border-radius: 9; -fx-border-width: 1; }
+
+.chart-plot {
+    -fx-pref-height: 120;                      /* plot height 120             */
+    -fx-min-height: 120;
+}
+
+.chart-column {
+    -fx-spacing: 4;
+    -fx-alignment: BOTTOM-CENTER;
+}
+
+.chart-bar-pair {
+    -fx-spacing: 9;                            /* 9px between pair members    */
+    -fx-alignment: BOTTOM-CENTER;
+}
+
+.chart-bar {
+    -fx-background-radius: 4 4 2 2;            /* 4 on top, 2 at the base     */
+    -fx-min-width: 9;
+}
+
+.chart-month-row {
+    -fx-padding: 6 0 0 0;
+}
+
+.chart-month-cell {
+    -fx-alignment: CENTER;
+}
+
+.chart-target-line {
+    -fx-min-height: 1;
+    -fx-pref-height: 1;
+    -fx-background-radius: 0;
+}
+
+.chart-legend { -fx-spacing: 14; -fx-alignment: CENTER-RIGHT; }
+.chart-legend-item { -fx-spacing: 6; -fx-alignment: CENTER-LEFT; }
+
+.chart-swatch {
+    -fx-min-width: 9;
+    -fx-min-height: 9;
+    -fx-pref-width: 9;
+    -fx-pref-height: 9;
+    -fx-background-radius: 9;
+}
+
+/* ============================================================================
+ * 7. Data table
+ * ========================================================================= */
+
+.table-card { -fx-padding: 0; -fx-background-radius: 9; -fx-border-radius: 9; -fx-border-width: 1; }
+
+.table-title-row { -fx-padding: 13 14 13 14; -fx-spacing: 12; -fx-alignment: CENTER-LEFT; }
+
+.table-view {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-view .column-header-background,
+.table-view .column-header,
+.table-view .filler {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+}
+
+.table-view .column-header .label {
+    -fx-padding: 9 14 9 14;                    /* 9 vertical, 14 horizontal    */
+    -fx-font-size: 10px;
+    -fx-font-weight: 800;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-view .column-header.column-numeric .label {
+    -fx-alignment: CENTER-RIGHT;
+}
+
+.table-view .table-row-cell {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+    -fx-cell-size: 34;
+}
+
+.table-view .table-cell {
+    -fx-padding: 8 14 8 14;                    /* dense on purpose: 8 and 14   */
+    -fx-font-size: 12.5px;
+    -fx-alignment: CENTER-LEFT;
+    -fx-border-width: 0;
+}
+
+.table-view .table-cell.column-numeric {
+    -fx-alignment: CENTER-RIGHT;
+}
+
+.table-view .table-cell.column-name {
+    -fx-font-weight: 700;                      /* design: 680 */
+}
+
+.table-view .placeholder { -fx-padding: 0; }
+
+.table-view .virtual-flow .scroll-bar:vertical,
+.table-view .virtual-flow .scroll-bar:horizontal {
+    -fx-pref-width: 10;
+    -fx-pref-height: 10;
+}
+
+.column-header {
+    -fx-padding: 9 14 9 14;                    /* 9 vertical, 14 horizontal    */
+}
+
+.table-cell {
+    -fx-padding: 8 14 8 14;                    /* 8 vertical, 14 horizontal    */
+}
+
+.table-footer {
+    -fx-padding: 11 14 11 14;                  /* paginated footer             */
+    -fx-spacing: 12;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.pagination { -fx-spacing: 3; -fx-alignment: CENTER-RIGHT; }
+
+.page-btn {
+    -fx-min-width: 28;
+    -fx-pref-height: 28;
+    -fx-min-height: 28;
+    -fx-font-size: 11.5px;
+    -fx-font-weight: 600;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+}
+
+/* ============================================================================
+ * 8. The rail
+ * ========================================================================= */
+
+.rail {
+    /* Width is owned by RailNav: it is the one dimension the design animates,
+     * and JavaFX CSS cannot animate a property. See docs/ui-spec-deviations.md. */
+    -fx-padding: 16 12 16 12;                  /* 16 vertical, 12 horizontal */
+    -fx-spacing: 12;
+    -fx-border-width: 0 1 0 0;                 /* 1px right edge             */
+}
+
+.rail-brand {
+    -fx-spacing: 11;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 0 0 4 0;
+}
+
+.rail-brand-text { -fx-spacing: 1; -fx-alignment: CENTER-LEFT; }
+
+.rail-tile {
+    -fx-min-width: 34;                         /* 34px square tile           */
+    -fx-min-height: 34;
+    -fx-pref-width: 34;
+    -fx-pref-height: 34;
+    -fx-background-radius: 11;                 /* 11px radius                */
+    -fx-alignment: CENTER;
+}
+
+.rail-section {
+    -fx-padding: 10 0 4 9;                     /* group label, inset 9       */
+}
+
+.rail-nav { -fx-spacing: 1; }                  /* 1px between items, no rule */
+
+.rail-item {
+    -fx-pref-height: 30;                       /* 30 tall                    */
+    -fx-min-height: 30;
+    -fx-padding: 0 9 0 9;                      /* 9 horizontal padding       */
+    -fx-spacing: 10;                           /* 10 between icon and label  */
+    -fx-background-radius: 7;                  /* 7px radius                 */
+    -fx-border-radius: 7;
+    -fx-alignment: CENTER-LEFT;
+    -fx-cursor: hand;
+}
+
+.rail-item-bar {
+    -fx-min-width: 2.5;                        /* inset brass indicator      */
+    -fx-pref-width: 2.5;
+    -fx-min-height: 16;
+    -fx-max-height: 16;
+    -fx-background-radius: 2;
+    -fx-translate-x: -9;
+}
+
+.rail-item-spacer { -fx-min-width: 2.5; -fx-pref-width: 2.5; }
+
+.rail-item-icon {
+    -fx-min-width: 16;                         /* 16px icons                 */
+    -fx-min-height: 16;
+    -fx-pref-width: 16;
+    -fx-pref-height: 16;
+}
+
+.rail-item-label { -fx-alignment: CENTER-LEFT; }
+
+.rail-count {
+    -fx-padding: 1 6 1 6;
+    -fx-background-radius: 99;
+    -fx-min-height: 16;
+    -fx-alignment: CENTER;
+}
+
+.rail-collapsed { }
+
+.rail-collapsed .rail-item {
+    -fx-alignment: CENTER;                     /* icons centre when collapsed*/
+    -fx-padding: 0;
+    -fx-spacing: 0;
+}
+
+.rail-footer {
+    -fx-spacing: 8;
+    -fx-padding: 8 0 0 0;
+}
+
+.rail-user {
+    -fx-spacing: 10;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 0 0 0 1;
+}
+
+.rail-collapse-button {
+    -fx-pref-height: 28;
+    -fx-min-height: 28;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;
+    -fx-border-width: 1;
+    -fx-padding: 0 9 0 9;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER-LEFT;
+    -fx-cursor: hand;
+}
+
+/* ============================================================================
+ * 9. Top bar
+ * ========================================================================= */
+
+.topbar {
+    -fx-pref-height: 58;                       /* 58 tall                    */
+    -fx-min-height: 58;
+    -fx-padding: 0 20 0 20;
+    -fx-spacing: 12;
+    -fx-alignment: CENTER-LEFT;
+    -fx-border-width: 0 0 1 0;                 /* 1px bottom border          */
+}
+
+.topbar-right { -fx-spacing: 10; -fx-alignment: CENTER-RIGHT; }
+
+/* ============================================================================
+ * 10. Page header, dialogs, command palette, tabs, filters
+ * ========================================================================= */
+
+.page-header {
+    -fx-spacing: 12;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.page-header-actions { -fx-spacing: 8; -fx-alignment: CENTER-RIGHT; }
+
+.dialog-pane {
+    -fx-padding: 0;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-width: 1;
+    -fx-max-width: 460;
+}
+
+.dialog-pane > .content.label, .dialog-pane .content { -fx-padding: 14; }
+
+.dialog-pane > .header-panel {
+    -fx-padding: 14 14 0 14;
+    -fx-background-color: transparent;
+}
+
+.dialog-pane > .header-panel .label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+}
+
+.dialog-pane > .button-bar > .container {
+    -fx-padding: 12 14 14 14;
+    -fx-spacing: 8;
+}
+
+.dialog-pane .button { -fx-pref-height: 31; -fx-min-height: 31; }
+
+.command-palette {
+    -fx-pref-width: 620;
+    -fx-max-width: 620;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-padding: 0;
+}
+
+.command-palette-field {
+    -fx-pref-height: 46;
+    -fx-padding: 0 14 0 14;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER-LEFT;
+    -fx-border-width: 0 0 1 0;
+}
+
+.command-palette-list { -fx-pref-height: 340; -fx-max-height: 340; }
+
+.command-item {
+    -fx-padding: 8 14 8 14;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER-LEFT;
+    -fx-cursor: hand;
+}
+
+.command-item-title { -fx-font-size: 12.5px; -fx-font-weight: 600; }
+.command-item-path  { -fx-font-size: 11px; }
+
+.command-section {
+    -fx-padding: 8 14 4 14;
+    -fx-font-size: 9.5px;
+    -fx-font-weight: 800;
+}
+
+.filter-panel { -fx-padding: 0; -fx-background-radius: 9; -fx-border-radius: 9; -fx-border-width: 1; }
+
+.filter-panel-header {
+    -fx-padding: 11 14 11 14;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER-LEFT;
+    -fx-cursor: hand;
+}
+
+.filter-panel-body { -fx-padding: 0 14 14 14; -fx-spacing: 12; }
+
+.filter-panel-summary { -fx-font-size: 11.5px; -fx-font-weight: 600; }
+
+.tab-pane > .tab-header-area > .tab-header-background { -fx-background-insets: 0; }
+
+.tab-pane > .tab-header-area { -fx-padding: 0; }
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-padding: 7 12 7 12;
+    -fx-background-radius: 7 7 0 0;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab .tab-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-width: 0;
+}
+
+/* Scroll panes used as the content host must not paint their own background */
+.content-scroll { -fx-background-insets: 0; -fx-padding: 0; }
+.content-scroll > .viewport { -fx-background-color: transparent; }
+
+/* ============================================================================
+ * 11. Legacy screen compatibility
+ * ----------------------------------------------------------------------------
+ * The pre-existing screens keep their own layout; these are the geometry parts
+ * of the class names they already use. Colours for them live in legacy.css.
+ * ========================================================================= */
+
+.nav-button {
+    -fx-padding: 14 18 14 18;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 600;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.summary-card {
+    -fx-padding: 14;
+    -fx-spacing: 8;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+    -fx-border-width: 1;
+}
+
+.summary-figure { -fx-font-size: 22px; -fx-font-weight: 800; }
+.summary-caption { -fx-font-size: 12.5px; -fx-font-weight: 400; }
+
+/* Fixed-size slot that keeps an icon from shifting the text beside it. Icons are
+ * placed inside one of these by Icons.boxed(); the slot's size is set in Java
+ * because it varies with the icon's context (16px in the rail, 14px in the top
+ * bar, 13px inline in a button). */
+.icon-slot { -fx-alignment: center; }

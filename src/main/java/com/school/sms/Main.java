@@ -25,6 +25,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         applyAppIcon(primaryStage);
 
+        // Loads the bundled fonts, installs the base theme as the user agent
+        // stylesheet and starts watching for new windows (so dialogs and secondary
+        // stages get the same stylesheet set as the main window). Must happen
+        // before the first window is shown.
+        com.school.sms.util.ThemeManager.bootstrap();
+
         if (new UserDAO().countUsers() == 0) {
             if (new SettingsDAO().get("school.name") == null) {
                 SchoolSetupScreen.show(primaryStage);

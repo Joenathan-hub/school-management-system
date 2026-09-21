@@ -1,0 +1,646 @@
+/* ============================================================================
+ * COMPONENT LAYER
+ * ----------------------------------------------------------------------------
+ * Visual treatment for every component in the design system. Every colour here
+ * is a token reference: there is not one colour literal in this file, and there
+ * is no light/dark branch anywhere in it. Theme switching is a single
+ * stylesheet swap on the Scene (tokens-light.css <-> tokens-dark.css).
+ *
+ * Elevation policy: borders, not shadows, are the separation device. The only
+ * -fx-effect rules in this file are on genuinely floating layers (menus,
+ * dialogs, command palette, toasts) and they are 1-2px at low opacity.
+ * ========================================================================= */
+
+/* ============================================================================
+ * 1. Application frame, cards, KPI cards
+ * ========================================================================= */
+
+.app-frame  { -fx-background-color: -color-canvas; }
+.content-region { -fx-background-color: -color-canvas; }
+
+.card, .table-card, .chart-card, .kpi-card, .summary-card, .filter-panel {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+}
+
+.card-header-box { -fx-border-color: transparent transparent -color-border transparent; -fx-border-width: 0 0 1 0; }
+
+.page-title   { -fx-text-fill: -color-text; }
+.page-subtitle { -fx-text-fill: -color-text-muted; }
+.card-title    { -fx-text-fill: -color-text; }
+.card-subtitle { -fx-text-fill: -color-text-muted; }
+
+.section-label { -fx-text-fill: -color-text-muted; }
+
+/* The four KPI cards are flat: surface background, or the secondary surface
+ * tone for the single emphasised card. Emphasis comes from position and type
+ * weight, never from flooding the card with the brand colour. */
+.kpi-card          { -fx-background-color: -color-surface; }
+.kpi-card-emphasis { -fx-background-color: -color-surface-2; }
+.kpi-value         { -fx-text-fill: -color-text; }
+.kpi-label         { -fx-text-fill: -color-text-muted; }
+.kpi-delta-up      { -fx-text-fill: -color-success-fg; }
+.kpi-delta-down    { -fx-text-fill: -color-danger-fg; }
+.kpi-delta-flat    { -fx-text-fill: -color-text-muted; }
+
+/* ============================================================================
+ * 2. Buttons
+ * ========================================================================= */
+
+.btn { -fx-background-insets: 0; }
+
+.btn-primary {
+    -fx-background-color: -color-primary;
+    -fx-border-color: -color-primary;
+    -fx-text-fill: -color-on-primary;
+}
+.btn-primary .ikonli-font-icon { -fx-icon-color: -color-on-primary; }
+.btn-primary:hover   { -fx-background-color: derive(-color-primary, -8%); -fx-border-color: derive(-color-primary, -8%); }
+.btn-primary:pressed { -fx-background-color: derive(-color-primary, -16%); -fx-border-color: derive(-color-primary, -16%); }
+
+.btn-secondary {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-text-fill: -color-text;
+}
+.btn-secondary:hover   { -fx-background-color: -color-surface-2; }
+.btn-secondary:pressed { -fx-background-color: -color-surface-2; -fx-border-color: -color-text-muted; }
+
+.btn-danger {
+    -fx-background-color: -color-danger-bg;
+    -fx-border-color: -color-danger-fg;
+    -fx-text-fill: -color-danger-fg;
+}
+.btn-danger:hover   { -fx-background-color: derive(-color-danger-bg, -4%); }
+.btn-danger:pressed { -fx-background-color: derive(-color-danger-bg, -8%); }
+
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: -color-text-muted;
+}
+.btn-ghost:hover   { -fx-background-color: -color-surface-2; -fx-text-fill: -color-text; }
+.btn-ghost:pressed { -fx-background-color: -color-surface-2; }
+
+.btn-link {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: -color-primary;
+    -fx-padding: 0;
+    -fx-pref-height: 20;
+    -fx-min-height: 20;
+    -fx-cursor: hand;
+}
+.btn-link:hover { -fx-underline: true; }
+.btn-link .ikonli-font-icon { -fx-icon-color: -color-primary; }
+
+.icon-button, .icon-button-lg {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+}
+.icon-button:hover, .icon-button-lg:hover { -fx-background-color: -color-surface-2; }
+.icon-button:pressed, .icon-button-lg:pressed { -fx-background-color: -color-surface-2; -fx-border-color: -color-text-muted; }
+.icon-button .ikonli-font-icon, .icon-button-lg .ikonli-font-icon { -fx-icon-color: -color-text; }
+
+/* Focus: a real, legible ring in both themes, drawn outside the control so it
+ * never shifts layout, on top of a 1px brand border. */
+.btn:focused,
+.icon-button:focused,
+.icon-button-lg:focused {
+    -fx-border-color: -color-focus-ring;
+    -fx-background-insets: 0, -2;
+    -fx-background-radius: 7, 9;
+}
+.icon-button:focused, .icon-button-lg:focused { -fx-background-radius: 9, 11; }
+.icon-button:focused, .icon-button-lg:focused { -fx-background-color: -color-surface, -color-focus-ring; }
+.btn-primary:focused  { -fx-background-color: -color-primary, -color-focus-ring; }
+.btn-secondary:focused, .btn-danger:focused, .btn-ghost:focused {
+    -fx-background-color: -color-surface, -color-focus-ring;
+}
+.btn:disabled { -fx-opacity: 0.5; }
+
+/* ============================================================================
+ * 3. Inputs, search, keyboard hint
+ * ========================================================================= */
+
+.text-field, .password-field, .text-area, .combo-box, .date-picker, .spinner {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-text-fill: -color-text;
+    -fx-prompt-text-fill: -color-text-muted;
+    -fx-highlight-fill: -color-primary;
+    -fx-highlight-text-fill: -color-on-primary;
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused,
+.combo-box:focused, .date-picker:focused {
+    -fx-border-color: -color-focus-ring;
+    -fx-background-insets: 0, -2;
+    -fx-background-radius: 7, 9, 7;
+}
+
+.text-field:error, .password-field:error, .text-area:error, .combo-box:error, .date-picker:error,
+.field-error {
+    -fx-border-color: -color-danger-fg;
+    -fx-background-color: -color-danger-bg;
+    -fx-text-fill: -color-danger-fg;
+}
+
+.field-error-text { -fx-font-size: 11px; -fx-text-fill: -color-danger-fg; }
+.field-hint       { -fx-text-fill: -color-text-muted; }
+.field-label      { -fx-text-fill: -color-text; }
+
+.text-field:disabled, .password-field:disabled, .text-area:disabled, .combo-box:disabled {
+    -fx-background-color: -color-surface-2;
+    -fx-text-fill: -color-text-muted;
+}
+
+.search-field {
+    -fx-background-color: -color-surface-2;
+    -fx-border-color: -color-border;
+}
+.search-field-focused { -fx-border-color: -color-focus-ring; }
+.search-field .search-icon { -fx-icon-color: -color-text-muted; }
+.search-field .text-field {
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: -color-text-muted;
+}
+.search-field .text-field:focused { -fx-background-insets: 0; -fx-background-color: transparent; }
+
+.kbd-hint {
+    -fx-background-color: -color-canvas;
+    -fx-border-color: -color-border;
+}
+.kbd-hint-text { -fx-text-fill: -color-text-muted; }
+
+/* Checkbox, radio and toggle switch */
+.check-box, .radio-button { -fx-text-fill: -color-text; -fx-font-size: 12.5px; }
+.check-box .box {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 3;
+}
+.check-box:selected .box { -fx-background-color: -color-primary; -fx-border-color: -color-primary; }
+.check-box:selected .mark { -fx-background-color: -color-on-primary; }
+.check-box:focused .box  { -fx-border-color: -color-focus-ring; }
+.radio-button .radio {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+}
+.radio-button:selected .radio { -fx-background-color: -color-primary; -fx-border-color: -color-primary; }
+.radio-button:selected .dot { -fx-background-color: -color-on-primary; }
+.radio-button:focused .radio { -fx-border-color: -color-focus-ring; }
+
+.toggle-switch .toggle-track {
+    -fx-background-color: -color-border;
+    -fx-border-color: -color-border;
+}
+.toggle-switch .toggle-thumb { -fx-background-color: -color-surface; }
+.toggle-switch:on .toggle-track { -fx-background-color: -color-primary; -fx-border-color: -color-primary; }
+.toggle-switch:on .toggle-thumb { -fx-background-color: -color-on-primary; }
+.toggle-switch:focused .toggle-track { -fx-border-color: -color-focus-ring; }
+
+/* Segmented control */
+.segmented {
+    -fx-background-color: -color-surface-2;
+    -fx-border-color: -color-border;
+}
+.segmented-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-text-muted;
+}
+.segmented-item:hover { -fx-text-fill: -color-text; }
+.segmented-item-selected {
+    -fx-background-color: -color-surface;
+    -fx-text-fill: -color-text;
+    -fx-border-color: -color-border;
+    -fx-border-radius: 6;
+}
+.segmented-item:focused { -fx-border-color: -color-focus-ring; -fx-border-radius: 6; }
+
+/* ============================================================================
+ * 4. Badges, banners, toasts
+ * ========================================================================= */
+
+.badge-success { -fx-background-color: -color-success-bg; -fx-text-fill: -color-success-fg; }
+.badge-warning { -fx-background-color: -color-warning-bg; -fx-text-fill: -color-warning-fg; }
+.badge-danger  { -fx-background-color: -color-danger-bg;  -fx-text-fill: -color-danger-fg;  }
+.badge-neutral { -fx-background-color: -color-surface-2;  -fx-text-fill: -color-text-muted; }
+.badge-info    { -fx-background-color: -color-surface-2;  -fx-text-fill: -color-primary;    }
+
+.banner-success { -fx-background-color: -color-success-bg; -fx-border-color: -color-success-fg; }
+.banner-success .banner-text { -fx-text-fill: -color-success-fg; }
+.banner-warning { -fx-background-color: -color-warning-bg; -fx-border-color: -color-warning-fg; }
+.banner-warning .banner-text { -fx-text-fill: -color-warning-fg; }
+.banner-danger  { -fx-background-color: -color-danger-bg;  -fx-border-color: -color-danger-fg;  }
+.banner-danger .banner-text  { -fx-text-fill: -color-danger-fg;  }
+.banner-info    { -fx-background-color: -color-surface-2;  -fx-border-color: -color-border;     }
+.banner-info .banner-text    { -fx-text-fill: -color-text; }
+
+.banner-success .banner-icon { -fx-icon-color: -color-success-fg; }
+.banner-warning .banner-icon { -fx-icon-color: -color-warning-fg; }
+.banner-danger  .banner-icon { -fx-icon-color: -color-danger-fg;  }
+.banner-info    .banner-icon { -fx-icon-color: -color-primary;    }
+
+.toast {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-effect: dropshadow(gaussian, -color-shadow, 2, 0, 0, 1);
+}
+.toast-text { -fx-text-fill: -color-text; }
+.toast-success .toast-icon { -fx-icon-color: -color-success-fg; }
+.toast-warning .toast-icon { -fx-icon-color: -color-warning-fg; }
+.toast-danger  .toast-icon { -fx-icon-color: -color-danger-fg;  }
+.toast-info    .toast-icon { -fx-icon-color: -color-primary;    }
+
+/* ============================================================================
+ * 5. Progress rows
+ * ========================================================================= */
+
+.progress-label { -fx-text-fill: -color-text; }
+.progress-value { -fx-text-fill: -color-text; }
+.progress-track { -fx-background-color: -color-surface-2; -fx-border-color: -color-border; -fx-border-radius: 99; -fx-border-width: 1; }
+.progress-fill  { -fx-background-color: -color-primary; }
+
+/* ============================================================================
+ * 6. Chart
+ * ========================================================================= */
+
+.chart-card { -fx-background-color: -color-surface; -fx-border-color: -color-border; }
+.chart-bar          { -fx-background-color: -color-chart-series; }
+.chart-bar-alt      { -fx-background-color: -color-chart-companion; }
+.chart-target-line  { -fx-background-color: -color-warning-fg; }
+.chart-month-label  { -fx-text-fill: -color-text-muted; }
+.chart-legend-label { -fx-text-fill: -color-text-muted; }
+.chart-swatch-primary { -fx-background-color: -color-chart-series; }
+.chart-swatch-companion { -fx-background-color: -color-chart-companion; }
+
+/* ============================================================================
+ * 7. Data table
+ * ========================================================================= */
+
+.table-card { -fx-background-color: -color-surface; -fx-border-color: -color-border; }
+
+.table-title      { -fx-text-fill: -color-text; }
+.table-subtitle   { -fx-text-fill: -color-text-muted; }
+.table-link       { -fx-text-fill: -color-primary; }
+.table-link .ikonli-font-icon { -fx-icon-color: -color-primary; }
+
+.table-view {
+    -fx-background-color: -color-surface;
+    -fx-border-color: transparent;
+}
+
+/* Column headers: secondary surface, 1px bottom border, uppercase 10px. */
+.table-view .column-header-background { -fx-background-color: -color-surface-2; }
+.table-view .column-header,
+.table-view .column-header-background .filler {
+    -fx-background-color: -color-surface-2;
+    -fx-border-color: transparent transparent -color-border transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-size: 30;
+}
+.table-view .column-header .label {
+    -fx-text-fill: -color-text-muted;
+    -fx-font-size: 10px;
+    -fx-font-weight: 800;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+    -fx-text-fill: -color-text;
+}
+.table-view .table-row-cell:odd  { -fx-background-color: -color-surface; }
+.table-view .table-row-cell:hover { -fx-background-color: -color-surface-2; }
+.table-view .table-row-cell:selected {
+    -fx-background-color: -color-surface-2;
+    -fx-border-color: -color-primary transparent transparent transparent;
+    -fx-border-width: 1 0 0 2;
+}
+.table-view .table-row-cell:selected .table-cell { -fx-text-fill: -color-text; }
+.table-view .table-row-cell:focused { -fx-background-color: -color-surface-2; }
+
+.table-view .table-cell { -fx-text-fill: -color-text; }
+.table-view .table-cell.column-name { -fx-text-fill: -color-text; }
+.table-view .table-cell.column-numeric { -fx-text-fill: -color-text; }
+.table-view .table-cell.column-muted { -fx-text-fill: -color-text-muted; }
+
+.table-view:focused { -fx-border-color: -color-focus-ring; }
+
+/* In-cell badges must never inherit the row's text colour by accident: each
+ * badge carries its own matched pair, and always carries its word. */
+.table-view .badge-success { -fx-background-color: -color-success-bg; -fx-text-fill: -color-success-fg; }
+.table-view .badge-warning { -fx-background-color: -color-warning-bg; -fx-text-fill: -color-warning-fg; }
+.table-view .badge-danger  { -fx-background-color: -color-danger-bg;  -fx-text-fill: -color-danger-fg;  }
+.table-view .badge-neutral { -fx-background-color: -color-surface-2;  -fx-text-fill: -color-text-muted; }
+
+.table-footer {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+}
+.table-footer-text { -fx-text-fill: -color-text-muted; -fx-font-size: 11.5px; }
+
+.page-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: -color-text-muted;
+}
+.page-btn:hover { -fx-background-color: -color-surface-2; -fx-text-fill: -color-text; }
+.page-btn-active { -fx-background-color: -color-primary; -fx-text-fill: -color-on-primary; }
+.page-btn:focused { -fx-border-color: -color-focus-ring; }
+
+/* ============================================================================
+ * 8. Skeletons and empty states
+ * ========================================================================= */
+
+.skeleton, .skeleton-line, .skeleton-line-title, .skeleton-block, .skeleton-kpi, .skeleton-avatar {
+    -fx-background-color: -color-surface-2;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+}
+.skeleton-avatar { -fx-border-radius: 10; }
+
+.empty-icon { -fx-background-color: -color-surface-2; -fx-border-color: -color-border; -fx-border-radius: 99; -fx-border-width: 1; }
+.empty-icon .ikonli-font-icon { -fx-icon-color: -color-text-muted; }
+.empty-title { -fx-text-fill: -color-text; }
+.empty-text  { -fx-text-fill: -color-text-muted; }
+
+/* ============================================================================
+ * 9. The rail - dark in BOTH modes, deliberately
+ * ========================================================================= */
+
+.rail {
+    -fx-background-color: -color-rail;
+    -fx-border-color: transparent -color-rail-border transparent transparent;
+}
+
+.rail-tile {
+    /* flat brass in light mode, a diagonal brass-to-deeper-brass gradient in
+     * dark mode - the single place a saturated brand colour runs at full
+     * strength. The fill itself is a token, so the mode difference needs no
+     * conditional rule here. */
+    -fx-background-color: -color-rail-tile-fill;
+}
+.rail-tile-text { -fx-text-fill: -color-rail-accent-on; }
+.rail-wordmark   { -fx-text-fill: -color-rail-text; }
+.rail-subtitle   { -fx-text-fill: -color-rail-text-muted; }
+.rail-section-label { -fx-text-fill: -color-rail-text-muted; }
+
+.rail-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-rail-text-muted;
+}
+.rail-item .rail-item-icon { -fx-icon-color: -color-rail-text-muted; }
+.rail-item .rail-item-label { -fx-text-fill: -color-rail-text-muted; }
+.rail-item:hover { -fx-background-color: -color-rail-active-bg; }
+.rail-item:hover .rail-item-icon { -fx-icon-color: -color-rail-text; }
+.rail-item:hover .rail-item-label { -fx-text-fill: -color-rail-text; }
+
+/* Active item: tinted background, white text AND a 2.5px inset brass bar. All
+ * three signals, never just one. */
+.rail-item-active {
+    -fx-background-color: -color-rail-active-bg;
+}
+.rail-item-active .rail-item-icon { -fx-icon-color: -color-rail-text; }
+.rail-item-active .rail-item-label { -fx-text-fill: -color-rail-text; }
+.rail-item-bar { -fx-background-color: -color-rail-accent; }
+
+.rail-item:focused { -fx-border-color: -color-rail-accent; -fx-border-radius: 7; -fx-border-width: 1; }
+
+.rail-count {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-on-primary;
+}
+.rail-count .label { -fx-text-fill: -color-on-primary; }
+
+.rail-user-name { -fx-text-fill: -color-rail-text; }
+.rail-user-role { -fx-text-fill: -color-rail-text-muted; }
+
+.rail-divider { -fx-background-color: -color-rail-border; -fx-min-height: 1; -fx-pref-height: 1; }
+
+.rail-collapse-button {
+    -fx-background-color: transparent;
+    -fx-border-color: -color-rail-border;
+    -fx-text-fill: -color-rail-text-muted;
+}
+.rail-collapse-button:hover { -fx-background-color: -color-rail-active-bg; -fx-text-fill: -color-rail-text; }
+.rail-collapse-button .ikonli-font-icon { -fx-icon-color: -color-rail-text-muted; }
+.rail-collapse-button:focused { -fx-border-color: -color-rail-accent; }
+
+.rail .scroll-pane, .rail .scroll-pane > .viewport { -fx-background-color: transparent; }
+.rail .scroll-bar:vertical .track,
+.rail .scroll-bar:vertical .thumb { -fx-background-color: -color-rail-border; }
+
+/* ============================================================================
+ * 10. Top bar
+ * ========================================================================= */
+
+.topbar {
+    -fx-background-color: -color-surface;
+    -fx-border-color: transparent transparent -color-border transparent;
+}
+
+.notif-dot { -fx-background-color: -color-surface, -color-danger-fg; }
+
+.term-pill {
+    -fx-background-color: -color-surface-2;
+    -fx-border-color: -color-border;
+}
+.term-pill-text { -fx-text-fill: -color-text-muted; }
+.term-pill .ikonli-font-icon { -fx-icon-color: -color-text-muted; }
+
+.avatar {
+    -fx-background-color: linear-gradient(to bottom right, -color-primary, -color-accent);
+}
+.avatar-text { -fx-text-fill: -color-on-primary; }
+
+/* ============================================================================
+ * 11. Dialogs, toasts layer, command palette, tabs, filters
+ * ========================================================================= */
+
+.dialog-pane {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-effect: dropshadow(gaussian, -color-shadow, 2, 0, 0, 1);
+}
+.dialog-pane > .header-panel .label { -fx-text-fill: -color-text; }
+.dialog-pane .content .label, .dialog-pane .label { -fx-text-fill: -color-text; }
+.dialog-pane .message-text { -fx-text-fill: -color-text-muted; }
+.dialog-pane > .button-bar > .container { -fx-background-color: -color-surface; }
+
+.scrim { -fx-background-color: -color-scrim; }
+
+/* States how many filters are on, so a collapsed panel never hides the fact
+ * that the list underneath is filtered. */
+.filter-panel-summary { -fx-text-fill: -color-text-muted; }
+
+.command-palette {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-effect: dropshadow(gaussian, -color-shadow, 2, 0, 0, 1);
+}
+.command-palette-field { -fx-background-color: -color-surface; -fx-border-color: transparent transparent -color-border transparent; }
+.command-palette-field .text-field { -fx-background-color: transparent; -fx-font-size: 13px; }
+.command-palette-field .text-field:focused { -fx-background-insets: 0; -fx-background-color: transparent; }
+.command-palette-field .ikonli-font-icon { -fx-icon-color: -color-text-muted; }
+.command-palette-list { -fx-background-color: -color-surface; }
+.command-item-title { -fx-text-fill: -color-text; }
+.command-item-path  { -fx-text-fill: -color-text-muted; }
+.command-item .ikonli-font-icon { -fx-icon-color: -color-text-muted; }
+.command-item:hover { -fx-background-color: -color-surface-2; }
+.command-item-selected { -fx-background-color: -color-surface-2; -fx-border-color: transparent transparent transparent -color-primary; -fx-border-width: 0 0 0 2; }
+.command-item-selected .command-item-title { -fx-text-fill: -color-text; }
+.command-section { -fx-text-fill: -color-text-muted; }
+.command-empty { -fx-text-fill: -color-text-muted; }
+
+.filter-panel { -fx-background-color: -color-surface; -fx-border-color: -color-border; }
+.filter-panel-header .card-title { -fx-text-fill: -color-text; }
+.filter-panel-header .ikonli-font-icon { -fx-icon-color: -color-text-muted; }
+
+.tab-pane > .tab-header-area > .tab-header-background { -fx-background-color: transparent; }
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent -color-border transparent;
+    -fx-border-width: 0 0 2 0;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab .tab-label { -fx-text-fill: -color-text-muted; }
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent -color-primary transparent;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label { -fx-text-fill: -color-text; }
+.tab-pane > .tab-header-area > .headers-region > .tab:hover .tab-label { -fx-text-fill: -color-text; }
+.tab-pane > .tab-header-area > .headers-region > .tab:focused { -fx-border-color: -color-focus-ring; }
+.tab-pane > .tab-content-area { -fx-background-color: transparent; -fx-padding: 16 0 0 0; }
+
+/* Accordion / collapsible filter panel */
+.titled-pane { -fx-text-fill: -color-text; }
+.titled-pane > .title {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1;
+    -fx-padding: 10 12 10 12;
+}
+.titled-pane > .title > .arrow-button .arrow { -fx-background-color: -color-text-muted; }
+.titled-pane > *.content { -fx-background-color: -color-surface; -fx-border-color: -color-border; -fx-border-width: 0 1 1 1; }
+.titled-pane .card-title { -fx-text-fill: -color-text; }
+
+/* ============================================================================
+ * 12. Legacy screen classes, mapped onto the same tokens
+ * ----------------------------------------------------------------------------
+ * The existing 25 screens keep their own structure; these rules only re-skin
+ * the class names they already use, so the whole application reads as one
+ * system without a line of layout change.
+ * ========================================================================= */
+
+.root { -fx-background-color: -color-canvas; }
+
+.header-bar { -fx-background-color: -color-surface; -fx-border-color: transparent transparent -color-border transparent; -fx-border-width: 0 0 1 0; }
+.header-title { -fx-text-fill: -color-text; }
+.header-subtitle { -fx-text-fill: -color-text-muted; }
+
+.section-label { -fx-text-fill: -color-text; }
+.field-label { -fx-text-fill: -color-text; }
+
+.primary-button {
+    -fx-background-color: -color-primary;
+    -fx-border-color: -color-primary;
+    -fx-text-fill: -color-on-primary;
+}
+.primary-button:hover { -fx-background-color: derive(-color-primary, -8%); }
+
+.accent-button {
+    -fx-background-color: -color-primary;
+    -fx-border-color: -color-primary;
+    -fx-text-fill: -color-on-primary;
+}
+.accent-button:hover { -fx-background-color: derive(-color-primary, -8%); }
+
+.secondary-button {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-text-fill: -color-text;
+}
+.secondary-button:hover { -fx-background-color: -color-surface-2; }
+
+.danger-button {
+    -fx-background-color: -color-danger-bg;
+    -fx-border-color: -color-danger-fg;
+    -fx-text-fill: -color-danger-fg;
+}
+
+.status-success { -fx-text-fill: -color-success-fg; -fx-font-weight: 600; }
+.status-error   { -fx-text-fill: -color-danger-fg;  -fx-font-weight: 600; }
+
+.nav-button {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-text-fill: -color-text;
+}
+.nav-button:hover { -fx-background-color: -color-surface-2; }
+
+.summary-card {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+}
+.summary-card-clickable { -fx-cursor: hand; }
+.summary-card-clickable:hover { -fx-background-color: -color-surface-2; }
+.summary-figure  { -fx-text-fill: -color-text; }
+.summary-caption { -fx-text-fill: -color-text-muted; }
+.dashboard-welcome { -fx-text-fill: -color-text; }
+.clock-time { -fx-text-fill: -color-text; }
+.clock-date { -fx-text-fill: -color-text-muted; }
+.dashboard-right-panel { -fx-background-color: -color-surface; }
+
+.separator *.line { -fx-border-color: -color-border; -fx-border-width: 0 0 1 0; }
+
+/* ============================================================================
+ * 13. Hand-built table card
+ * ----------------------------------------------------------------------------
+ * The dashboard's data table is built from rows rather than a TableView, so that
+ * rows can be arrow-key navigated and opened with Enter while keeping the design's
+ * exact cell metrics. These are the colour rules for that construction; its
+ * geometry is in structure.css (.table-title-row, .table-cell-*, .table-footer,
+ * .page-btn). The .table-view rules above continue to serve the screens that
+ * still use a real TableView.
+ * ========================================================================= */
+
+.column-header-background { -fx-background-color: -color-surface-2; }
+
+.column-header {
+    -fx-background-color: -color-surface-2;
+    -fx-border-color: transparent transparent -color-border transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.column-header .table-column-title { -fx-text-fill: -color-text-muted; }
+.column-header .column-numeric .table-column-title { -fx-text-fill: -color-text-muted; }
+
+.table-row-cell {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+}
+.table-row-cell:hover { -fx-background-color: -color-surface-2; }
+.table-row-cell:focused {
+    -fx-background-color: -color-surface-2;
+    -fx-border-color: -color-focus-ring -color-border -color-border -color-focus-ring;
+    -fx-border-width: 1 0 1 1;
+}
+
+.table-cell-text, .table-cell-name, .table-cell-numeric { -fx-text-fill: -color-text; }
+
+.table-footer {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* A glyph shown when the icon font is unavailable - vector text, never an image. */
+.icon-fallback { -fx-text-fill: -color-text-muted; }

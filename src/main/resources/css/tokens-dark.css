@@ -1,0 +1,106 @@
+/* ============================================================================
+ * TOKEN LAYER - DARK
+ * ----------------------------------------------------------------------------
+ * The dark half of the token layer. Same variable names, same count, one file.
+ * Dark mode here is a deliberately cool, near-black terminal-adjacent charcoal:
+ * the canvas is the darkest tone, the primary surface sits one step above it
+ * and the secondary surface another step above that, with borders noticeably
+ * lighter than the surfaces so that hairline separation still reads.
+ *
+ * This file is the single thing that changes between light and dark: the Scene
+ * keeps its structure.css / components.css / base theme and swaps only this
+ * stylesheet.
+ * ========================================================================= */
+
+.root {
+
+    /* ---- surfaces and text ------------------------------------------------ */
+    -color-canvas:          #0D1117;   /* darkest tone - the canvas               */
+    -color-surface:         #151B23;   /* primary surface, one step up            */
+    -color-surface-2:       #1C2128;   /* secondary surface, one step above that  */
+    -color-border:          #30363D;   /* noticeably lighter than the surfaces    */
+    -color-text:            #E6EDF3;   /* cool off-white, not pure white          */
+    -color-text-muted:      #9198A1;   /* desaturated grey                        */
+
+    /* ---- brand ------------------------------------------------------------ */
+    -color-primary:         #4493F8;   /* lighter, more luminous blue             */
+    -color-on-primary:      #06121F;   /* near-black - NOT white, on the blue     */
+    -color-accent:          #4493F8;
+
+    /* ---- chart ------------------------------------------------------------ */
+    -color-chart-series:    #4493F8;
+    -color-chart-companion: #21324A;
+
+    /* ---- semantic pairs --------------------------------------------------- */
+    -color-success-bg:      #12261E;
+    -color-success-fg:      #3FB950;
+    -color-warning-bg:      #2A2110;
+    -color-warning-fg:      #D29922;
+    -color-danger-bg:       #2A1518;
+    -color-danger-fg:       #F85149;
+
+    /* ---- focus, scrim, elevation ----------------------------------------- */
+    -color-focus-ring:      #4493F8;
+    -color-scrim:           rgba(1, 4, 9, 0.66);
+    -color-shadow:          rgba(1, 4, 9, 0.55);
+
+    /* ---- the rail --------------------------------------------------------- *
+     * Deeper than the light-mode rail, never lighter than it, and still the
+     * only place in the interface where the rail's brass is allowed to be
+     * prominent.                                                              */
+    -color-rail:            #0A1526;
+    -color-rail-border:     #1B2A42;
+    -color-rail-text:       #FFFFFF;
+    -color-rail-text-muted: #8FA1BE;
+    -color-rail-active-bg:  #1E3355;
+    -color-rail-accent:     #D4AF37;   /* brass brightens and leads in dark mode  */
+    -color-rail-accent-deep: #8A6A0F;  /* deeper brass for the tile gradient      */
+    -color-rail-accent-on:  #06121F;   /* 8.97:1 on the brightened brass          */
+    /* The brand tile is the one place a saturated brand colour runs at full
+     * strength: flat in light mode, a diagonal brass-to-deeper-brass gradient
+     * here. It is a token so that the difference needs no rule anywhere else. */
+    -color-rail-tile-fill:  linear-gradient(to bottom right, -color-rail-accent, -color-rail-accent-deep);
+
+    /* ======================================================================
+     * Base-theme bridge - dark values, identical names to tokens-light.css.
+     * ==================================================================== */
+    -color-fg-default:            -color-text;
+    -color-fg-muted:              -color-text-muted;
+    -color-fg-subtle:             -color-text-muted;
+    -color-fg-emphasis:           -color-on-primary;
+    -color-bg-default:            -color-surface;
+    -color-bg-overlay:            -color-surface;
+    -color-bg-subtle:             -color-surface-2;
+    -color-bg-inset:              -color-surface-2;
+    -color-canvas-default:        -color-canvas;
+    -color-canvas-subtle:         -color-surface-2;
+    -color-canvas-inset:          -color-surface-2;
+    -color-canvas-overlay:        -color-surface;
+    -color-border-default:        -color-border;
+    -color-border-muted:          -color-border;
+    -color-border-subtle:         -color-border;
+    -color-shadow-default:        -color-border;
+    -color-neutral-emphasis-plus: -color-text;
+    -color-neutral-emphasis:      -color-text-muted;
+    -color-neutral-muted:         -color-surface-2;
+    -color-neutral-subtle:        -color-surface-2;
+    -color-accent-fg:             -color-primary;
+    -color-accent-emphasis:       -color-primary;
+    -color-accent-muted:          -color-chart-companion;
+    -color-accent-subtle:         -color-chart-companion;
+    -color-success-emphasis:      -color-success-fg;
+    -color-success-muted:         -color-success-bg;
+    -color-success-subtle:        -color-success-bg;
+    -color-warning-emphasis:      -color-warning-fg;
+    -color-warning-muted:         -color-warning-bg;
+    -color-warning-subtle:        -color-warning-bg;
+    -color-danger-emphasis:       -color-danger-fg;
+    -color-danger-muted:          -color-danger-bg;
+    -color-danger-subtle:         -color-danger-bg;
+    -color-chart-1:               -color-chart-series;
+    -color-chart-2:               -color-chart-companion;
+    -color-chart-1-alpha20:       -color-chart-companion;
+    -color-chart-2-alpha20:       -color-chart-companion;
+    -color-chart-1-alpha70:       -color-chart-series;
+    -color-chart-2-alpha70:       -color-chart-series;
+}

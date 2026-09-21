@@ -1,0 +1,219 @@
+/* ============================================================================
+ * Harness-only layout.
+ * ----------------------------------------------------------------------------
+ * Nothing in this file is design: it is the scaffolding JavaFX provides for
+ * free and the browser does not. Panes in JavaFX are fleX/grid containers with
+ * their own layout rules; here those have to be stated, and the two dimensions
+ * the application sets from Java (the rail's width, which is animated, and icon
+ * sizes, which vary by context) have to come from somewhere.
+ * ========================================================================= */
+
+body { min-height: 100vh; }
+
+/* ---- the window ---- */
+.screen { padding: 0; }
+.app-frame {
+    border-radius: 14px;
+    overflow: hidden;
+    min-height: calc(100vh - 44px);
+    align-items: stretch;
+}
+.main { min-width: 0; }
+.content-scroll { overflow: auto; }
+.content-region { align-items: stretch; }
+
+/* ---- the rail: width is owned by RailNav in the application, mirrored here ---- */
+body[data-rail="expanded"] { --rail-width: 236px; }
+body[data-rail="collapsed"] { --rail-width: 68px; }
+.rail {
+    width: var(--rail-width);
+    min-width: var(--rail-width);
+    max-width: var(--rail-width);
+    transition: width 220ms ease-in-out, min-width 220ms ease-in-out;
+    border-right-width: 1px;
+    border-right-style: solid;
+}
+.rail-nav-scroll { overflow-y: auto; overflow-x: hidden; }
+.rail-item { width: 100%; text-align: left; }
+.rail-item-icon .icon { font-size: 16px; }
+.rail-collapse-button .rail-item-icon .icon { font-size: 16px; }
+.rail-collapsed-item { display: none; }
+
+/* Collapsed: labels, section headings and the wordmark are hidden outright -
+ * never truncated to an ellipsis - and the icons centre. */
+body[data-rail="collapsed"] .rail-brand-text,
+body[data-rail="collapsed"] .rail-section-label,
+body[data-rail="collapsed"] .rail-item-label,
+body[data-rail="collapsed"] .rail-count,
+body[data-rail="collapsed"] .rail-user .vbox,
+body[data-rail="collapsed"] .rail-theme-segmented { display: none; }
+body[data-rail="collapsed"] .rail-item,
+body[data-rail="collapsed"] .rail-collapse-button { justify-content: center; padding: 0; gap: 0; }
+body[data-rail="collapsed"] .rail-item > *,
+body[data-rail="collapsed"] .rail-collapse-button > * { display: none; }
+body[data-rail="collapsed"] .rail-item .rail-item-icon,
+body[data-rail="collapsed"] .rail-collapse-button .rail-item-icon { display: inline-flex; }
+body[data-rail="collapsed"] .rail-user { justify-content: center; }
+body[data-rail="expanded"] .rail-theme-cycle { display: none; }
+body[data-rail="collapsed"] .rail-theme-cycle { display: flex; }
+.rail-brand { padding-bottom: 4px; }
+.rail-tile-holder { flex: 0 0 auto; }
+
+/* ---- top bar ---- */
+.topbar { flex: 0 0 auto; height: 58px; border-bottom-width: 1px; border-bottom-style: solid; }
+.topbar .icon { font-size: 14px; }
+.topbar-right .icon { font-size: 13px; }
+.notif-holder { position: relative; width: 32px; height: 32px; }
+.notif-dot { position: absolute; top: 0; right: 0; }
+.search-field .text-field { color: var(--color-text-muted); display: flex; align-items: center; }
+
+/* ---- content ---- */
+.panel-row { align-items: stretch; gap: 12px; }
+.panel-row > .chart-card { flex: 1.5 1 0; }
+.panel-row > .card { flex: 1 1 0; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.kpi-card { align-items: flex-start; }
+.kpi-value { white-space: nowrap; }
+
+/* ---- chart ---- */
+.chart-card { display: flex; flex-direction: column; }
+.chart-body { gap: 0; }
+.chart-plot { position: relative; align-items: flex-end; }
+.chart-column { flex: 1 1 0; justify-content: flex-end; }
+.chart-bar { width: 9px; min-width: 9px; }
+.chart-bar-alt { background-color: var(--color-chart-companion); }
+.chart-target-line { position: absolute; left: 0; right: 0; top: 30px; height: 1px; }
+.chart-month-row { display: flex; }
+.chart-month-cell { flex: 1 1 0; }
+.chart-caption { padding-top: 6px; }
+.chart-legend-label { white-space: nowrap; }
+
+/* ---- hand-built table ---- */
+.grid6 {
+    display: grid;
+    grid-template-columns: 28.04% 14.95% 14.02% 14.02% 14.02% 14.95%;
+}
+.grid6 > * { min-width: 0; }
+.align-right { justify-content: flex-end; }
+.column-header, .table-cell { overflow: hidden; }
+.table-cell .label { overflow: hidden; text-overflow: ellipsis; }
+.table-row-cell { cursor: pointer; border-top-width: 1px; border-top-style: solid; }
+.badge { align-items: center; }
+.badge .icon { font-size: 11px; }
+
+/* ---- buttons, fields ---- */
+.btn .icon { font-size: 13px; }
+.icon-button { display: inline-flex; }
+.icon-button .icon { font-size: 13px; }
+.btn-link .icon { font-size: 11px; }
+
+/* ---- toasts and overlays, which sit above the frame in JavaFX too ---- */
+.toast-layer {
+    position: fixed; right: 0; bottom: 0;
+    align-items: flex-end; gap: 8px; z-index: 40; pointer-events: none;
+}
+.toast { pointer-events: auto; }
+.toast .icon { font-size: 13px; }
+.toast .icon-button { width: 26px; height: 26px; min-width: 26px; min-height: 26px; border: 0; }
+
+.overlay { position: fixed; inset: 0; z-index: 60; align-items: flex-start; }
+body[data-overlay="none"] .overlay { display: none; }
+body[data-overlay="palette"] .overlay[data-overlay="palette"] { display: grid; }
+body[data-overlay="dialog"] .overlay[data-overlay="dialog"] { display: grid; }
+.command-palette { margin-top: 80px; display: flex; flex-direction: column; }
+.command-palette-list { overflow: auto; }
+.command-item .icon { font-size: 14px; }
+.dialog-pane { margin-top: 140px; display: flex; flex-direction: column; }
+.dialog-pane .content { gap: 12px; }
+.dialog-pane .header-panel { display: flex; }
+.dialog-pane .button-bar { gap: 8px; padding: 12px 14px 14px 14px; }
+.dialog-pane .text-field { align-items: center; }
+
+/* ---- focus rings: the design puts them on :focused; here they are on :focus ---- */
+body[data-focus="on"] :focus { outline: 2px solid var(--color-focus-ring); outline-offset: 1px; }
+body[data-focus="off"] :focus { outline: none; }
+
+/* ============================================================================
+ * The harness bar. Deliberately outside the frame and visually unlike the
+ * application: it is a review tool, not a screen.
+ * ========================================================================= */
+.harness-bar {
+    position: sticky; top: 0; z-index: 80;
+    align-items: center; gap: 8px;
+    padding: 8px 14px;
+    background: #101826; color: #E6EDF3;
+    font: 12px/1.4 "Inter", system-ui, sans-serif;
+}
+.harness-title { font-weight: 700; letter-spacing: .04em; text-transform: uppercase; font-size: 10.5px; }
+.harness-note { color: #9AABC7; font-size: 11px; }
+.harness-sep { width: 1px; height: 18px; background: #2A3A55; margin: 0 4px; }
+.harness-link, .harness-btn {
+    border: 1px solid #2A3A55; background: #16202F; color: #E6EDF3;
+    border-radius: 6px; padding: 4px 9px; cursor: pointer; text-decoration: none;
+    font: 600 11.5px/1.4 "Inter", system-ui, sans-serif;
+}
+.harness-link:hover, .harness-btn:hover { background: #1E2B40; }
+.harness-btn[aria-pressed="true"] { background: #2C4A74; }
+
+/* ============================================================================
+ * Component-library page scaffolding.
+ * ----------------------------------------------------------------------------
+ * Two things only:
+ *   1. JavaFX pseudo-class -> class mapping. The sheets say :selected and :on;
+ *      the browser has no such states, so the preview marks those nodes with
+ *      .is-selected / .is-on. This is the one place the preview differs from the
+ *      stylesheets, and it is a naming difference, not a design one.
+ *   2. The geometry of controls whose skin comes from the base theme (AtlantaFX)
+ *      rather than from the application's own sheets: the checkbox box, the radio
+ *      dot and the slider-like parts. Their colours still come from the tokens.
+ * ========================================================================= */
+
+.library-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; align-items: start; }
+.wrap-row { flex-wrap: wrap; gap: 10px; align-items: center; }
+
+.check-box, .radio-button { gap: 8px; align-items: center; min-height: 28px; cursor: pointer; }
+.check-box .box, .radio-button .radio {
+    width: 15px; height: 15px; border: 1px solid var(--color-border);
+    background-color: var(--color-surface); border-radius: 3px;
+    display: grid; place-items: center;
+}
+.radio-button .radio { border-radius: 99px; }
+.check-box.is-selected .box { background-color: var(--color-primary); border-color: var(--color-primary); }
+.check-box.is-selected .mark { color: var(--color-on-primary); font-size: 9px; }
+.check-box .mark { color: transparent; }
+.radio-button.is-selected .radio { background-color: var(--color-primary); border-color: var(--color-primary); }
+.radio-button .dot {
+    width: 6px; height: 6px; border-radius: 99px; display: none;
+    background-color: var(--color-on-primary);
+}
+.radio-button.is-selected .dot { display: block; }
+.check-box:focus .box, .radio-button:focus .radio { border-color: var(--color-focus-ring); }
+
+.toggle-switch { align-items: center; cursor: pointer; }
+.toggle-switch .toggle-track {
+    width: 38px; height: 22px; border-radius: 99px; padding: 2px;
+    display: flex; align-items: center;
+    background-color: var(--color-surface-2); border: 1px solid var(--color-border);
+}
+.toggle-switch .toggle-thumb {
+    width: 16px; height: 16px; border-radius: 99px;
+    background-color: var(--color-surface); border: 1px solid var(--color-border);
+    transition: transform 120ms ease-in-out;
+}
+.toggle-switch.is-on .toggle-track { background-color: var(--color-primary); border-color: var(--color-primary); }
+.toggle-switch.is-on .toggle-thumb { background-color: var(--color-on-primary); transform: translateX(16px); }
+
+/* The text area needs rows; JavaFX gets this from the control, the browser not. */
+.text-area { min-height: 64px; }
+
+/* Segmented items are ToggleButtons in JavaFX; they read as buttons here. */
+.segmented-item { border: 1px solid transparent; border-radius: 6px; padding: 5px 11px; cursor: pointer;
+                  background-color: transparent; color: var(--color-text-muted); }
+.segmented-item.is-selected { background-color: var(--color-surface); border-color: var(--color-border);
+                              color: var(--color-text); }
+.segmented { background-color: var(--color-surface-2); border-color: var(--color-border); }
+
+/* Tab strip: the tab well is styled by the base theme in the application. */
+.tab-strip { gap: 4px; border-bottom: 1px solid var(--color-border); padding-bottom: 0; }
+.tab-strip .segmented-item { border-radius: 7px 7px 0 0; }
